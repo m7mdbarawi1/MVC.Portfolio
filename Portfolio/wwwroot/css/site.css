@@ -1,0 +1,636 @@
+/* ==========================================
+   Luxury Blue/Green Modern Theme
+   site.css (extends Bootstrap 5)
+========================================== */
+
+:root {
+    --primary-blue: #1565c0;
+    --secondary-green: #2e7d32;
+    --accent-yellow: #fbc02d;
+    --neutral-light: #f1f5f9;
+    --neutral-dark: #0f172a;
+    --danger-red: #9b1b30;
+    --font-family-base: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ============================
+   Body & Global
+============================ */
+body {
+    font-family: var(--font-family-base);
+    background-color: var(--neutral-light);
+    color: var(--neutral-dark);
+    transition: background-color 0.3s, color 0.3s;
+    padding-top: 70px; /* prevent overlap with fixed navbar */
+}
+
+.page-wrapper {
+    min-height: calc(100vh - 120px);
+}
+
+.page-title {
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-size: 1.75rem;
+}
+
+/* ============================
+   Navbar
+============================ */
+.bg-primary-custom {
+    background-color: var(--primary-blue) !important;
+}
+
+/* Navbar text size fix */
+.navbar .nav-link {
+    font-size: 0.9rem; /* smaller than default */
+    color: #fff !important;
+}
+
+    .navbar .nav-link:hover,
+    .navbar .dropdown-toggle:hover {
+        color: var(--accent-yellow) !important;
+    }
+
+
+/* ============================
+   Dropdown
+============================ */
+.dropdown-menu {
+    border-radius: 0.5rem;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    z-index: 2000;
+}
+
+    .dropdown-menu .dropdown-item {
+        font-size: 0.9rem;
+    }
+
+.dropdown-menu-responsive {
+    max-width: 90vw;
+    word-wrap: break-word;
+}
+
+@media (max-width: 576px) {
+    .dropdown-menu-responsive {
+        width: 100% !important;
+        text-align: center;
+    }
+
+    .navbar-brand span {
+        display: none;
+    }
+}
+
+/* ============================
+   Footer
+============================ */
+.footer-custom {
+    background-color: var(--primary-blue);
+    color: #fff;
+    width: 100%;
+    text-align: center;
+}
+
+    .footer-custom .footer-link {
+        color: #fff;
+        text-decoration: none;
+    }
+
+        .footer-custom .footer-link:hover {
+            color: var(--accent-yellow);
+        }
+
+@media (max-width: 576px) {
+    .footer-custom nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* ============================
+   Cards
+============================ */
+.card {
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+/* ============================
+   Tables
+============================ */
+.table {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    width: 100% !important;
+    margin-bottom: 0;
+    table-layout: auto;
+}
+
+    .table th {
+        background-color: var(--primary-blue);
+        color: #fff;
+        white-space: nowrap;
+        padding: 0.75rem 1rem;
+        font-weight: 600;
+    }
+
+    .table td {
+        vertical-align: middle;
+        padding: 0.75rem 1rem;
+    }
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--neutral-light);
+}
+
+.table-row-hover:hover {
+    background-color: rgba(21, 101, 192, 0.08); /* light blue hover */
+    transition: background-color 0.2s ease-in-out;
+}
+
+.table-header {
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+/* ============================
+   Badges
+============================ */
+.badge {
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 0.35rem;
+}
+
+/* ============================
+   Buttons (Theme-aligned)
+============================ */
+.btn {
+    font-weight: 500;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Primary (create, main actions) */
+.btn-primary {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: #fff;
+}
+
+    .btn-primary:hover {
+        background-color: #0e4ba1;
+        border-color: #0e4ba1;
+        transform: translateY(-2px);
+    }
+
+/* Secondary (edit, neutral actions) */
+.btn-secondary {
+    background-color: var(--secondary-green);
+    border-color: var(--secondary-green);
+    color: #fff;
+}
+
+    .btn-secondary:hover {
+        background-color: #255d27;
+        border-color: #255d27;
+        transform: translateY(-2px);
+    }
+
+/* Accent (details, highlight actions) */
+.btn-accent {
+    background-color: var(--accent-yellow);
+    border-color: var(--accent-yellow);
+    color: var(--neutral-dark);
+}
+
+    .btn-accent:hover {
+        background-color: #f9a825;
+        border-color: #f9a825;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+/* Danger (delete, destructive actions) */
+.btn-danger {
+    background-color: var(--danger-red);
+    border-color: var(--danger-red);
+    color: #fff;
+}
+
+    .btn-danger:hover {
+        background-color: #7a1324;
+        border-color: #7a1324;
+        transform: translateY(-2px);
+    }
+
+/* Info, Warning, Success (for badges and extra actions) */
+.btn-info {
+    background-color: #0288d1;
+    border-color: #0288d1;
+    color: #fff;
+}
+
+.btn-warning {
+    background-color: #f9a825;
+    border-color: #f9a825;
+    color: #000;
+}
+
+.btn-success {
+    background-color: #388e3c;
+    border-color: #388e3c;
+    color: #fff;
+}
+
+/* Buttons inside tables */
+.btn-action {
+    min-width: 110px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+    .btn-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+/* ============================
+   Responsive Fixes
+============================ */
+@media (max-width: 768px) {
+    td .d-flex {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-action {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* ============================
+   Dark Theme Overrides
+============================ */
+.dark-theme body {
+    background-color: var(--neutral-dark);
+    color: var(--neutral-light);
+}
+
+/* Navbar & Footer */
+.dark-theme .navbar,
+.dark-theme .footer-custom {
+    background-color: #000 !important;
+}
+
+/* Cards & Tables */
+.dark-theme .card {
+    background-color: #1e293b;
+    color: var(--neutral-light);
+}
+
+.dark-theme .table {
+    background-color: #1e293b;
+    color: var(--neutral-light);
+}
+
+    .dark-theme .table th {
+        background-color: #0d47a1; /* darker blue for contrast */
+        color: #fff;
+    }
+
+.dark-theme .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #273142;
+}
+
+.dark-theme .table-row-hover:hover {
+    background-color: rgba(21, 101, 192, 0.2);
+}
+
+/* Dropdowns */
+.dark-theme .dropdown-menu {
+    background-color: #1f2937;
+    border: 1px solid #334155;
+    color: var(--neutral-light);
+}
+
+.dark-theme .dropdown-item {
+    color: var(--neutral-light);
+}
+
+    .dark-theme .dropdown-item:hover {
+        background-color: var(--primary-blue);
+        color: #fff;
+    }
+
+.dark-theme .dropdown-divider {
+    border-top: 1px solid #334155;
+}
+
+/* Buttons in Dark Mode */
+.dark-theme .btn-primary {
+    background-color: #1e3a8a;
+    border-color: #1e3a8a;
+}
+
+.dark-theme .btn-secondary {
+    background-color: #1b5e20;
+    border-color: #1b5e20;
+}
+
+.dark-theme .btn-accent {
+    background-color: #fbc02d;
+    border-color: #fbc02d;
+    color: #000;
+}
+
+.dark-theme .btn-danger {
+    background-color: #8b1a2d;
+    border-color: #8b1a2d;
+}
+
+.dark-theme .btn-info {
+    background-color: #0277bd;
+}
+
+.dark-theme .btn-warning {
+    background-color: #f57f17;
+    border-color: #f57f17;
+    color: #fff;
+}
+
+.dark-theme .btn-success {
+    background-color: #1b5e20;
+}
+/* Fix table text in dark theme */
+.dark-theme .table td,
+.dark-theme .table th {
+    color: #f1f5f9 !important; /* light text */
+}
+
+
+/* ============================
+   Welcome Page (Hero + Sections)
+============================ */
+
+/* HERO */
+.hero-section {
+    position: relative;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    padding: 4rem 1rem;
+}
+
+    .hero-section h1,
+    .hero-section p {
+        text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    }
+
+    .hero-section .btn {
+        min-width: 180px;
+    }
+
+/* FEATURES */
+.page-wrapper h2 {
+    color: var(--primary-blue);
+}
+
+.card img {
+    height: 180px;
+    object-fit: cover;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+/* ABOUT */
+.bg-light img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+}
+
+/* POPULAR BOOKS */
+#popular-books .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    #popular-books .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+/* TESTIMONIALS */
+#testimonials .card {
+    border-left: 5px solid var(--primary-blue);
+    background: #fff;
+}
+
+    #testimonials .card h6 {
+        color: var(--primary-blue);
+    }
+
+/* CTA */
+.cta-section {
+    background: var(--primary-blue);
+    padding: 3rem 1rem;
+}
+
+    .cta-section h2,
+    .cta-section p {
+        color: #fff;
+    }
+
+    .cta-section .btn {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+/* ============================
+   Dark Theme Overrides
+============================ */
+.dark-theme .hero-section {
+    background-blend-mode: multiply;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.dark-theme .page-wrapper h2,
+.dark-theme #testimonials .card h6 {
+    color: var(--accent-yellow);
+}
+
+.dark-theme .card {
+    background-color: #1e293b;
+    color: var(--neutral-light);
+}
+
+.dark-theme #testimonials .card {
+    background-color: #273142;
+    border-left-color: var(--accent-yellow);
+}
+
+.dark-theme .cta-section {
+    background: #0d47a1;
+}
+/* Section dividers */
+.section-divider {
+    border: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--neutral-dark), transparent);
+    margin: 0;
+}
+
+/* Dark theme override */
+.dark-theme .section-divider {
+    background: linear-gradient(to right, transparent, var(--neutral-light), transparent);
+}
+
+
+/* === Chatbot Styles (Light + Dark Theme Support) === */
+#chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+}
+
+/* Floating Chat Button */
+#chatbot-toggle {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--primary-blue);
+    border: none;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+    #chatbot-toggle:hover {
+        background-color: #0e4ba1;
+        transform: translateY(-3px);
+    }
+
+/* Chat Window */
+#chatbot-box {
+    width: 320px;
+    max-height: 480px;
+    position: absolute;
+    bottom: 75px;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    background-color: #ffffff;
+    color: var(--neutral-dark);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Chat messages area */
+.chat-messages {
+    overflow-y: auto;
+    flex: 1;
+    max-height: 300px;
+    padding: 10px;
+    border: none;
+    background-color: #f8f9fa;
+}
+
+/* Chat messages */
+.chat-message {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    display: inline-block;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+    /* User message */
+    .chat-message.user {
+        background-color: var(--primary-blue);
+        color: #fff;
+        align-self: flex-end;
+    }
+
+    /* Bot message */
+    .chat-message.bot {
+        background-color: var(--neutral-light);
+        color: var(--neutral-dark);
+        align-self: flex-start;
+    }
+
+/* Input area */
+#chatbot-box .input-group {
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+    padding-top: 5px;
+}
+
+#chatbot-input {
+    border-radius: 20px 0 0 20px !important;
+}
+
+#chatbot-send {
+    border-radius: 0 20px 20px 0 !important;
+}
+
+/* === Dark Theme Overrides === */
+.dark-theme #chatbot-box {
+    background-color: #1e293b;
+    color: var(--neutral-light);
+    border: 1px solid #334155;
+}
+
+.dark-theme .chat-messages {
+    background-color: #273142;
+    border: none;
+}
+
+.dark-theme .chat-message.user {
+    background-color: #0d47a1;
+    color: #fff;
+}
+
+.dark-theme .chat-message.bot {
+    background-color: #334155;
+    color: #e2e8f0;
+}
+
+.dark-theme #chatbot-toggle {
+    background-color: var(--accent-yellow);
+    color: #000;
+}
+
+    .dark-theme #chatbot-toggle:hover {
+        background-color: #f9a825;
+        transform: translateY(-3px);
+    }
+
+.dark-theme #chatbot-box .input-group {
+    background-color: #1e293b;
+    border-top: 1px solid #334155;
+}
+
+.social-icon i {
+    font-size: 1.5rem;
+    color: #ffffff; /* Make icons white */
+    transition: transform 0.2s, color 0.2s;
+}
+
+.social-icon:hover i {
+    transform: scale(1.2);
+    color: #f0f0f0; /* Slightly lighter on hover */
+}
