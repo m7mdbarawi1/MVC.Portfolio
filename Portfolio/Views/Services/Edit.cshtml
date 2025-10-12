@@ -1,54 +1,81 @@
 ﻿@model Portfolio.Models.Service
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Service";
 }
 
-<h1>Edit</h1>
+<div class="container-fluid page-wrapper mt-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12 d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+            <h1 class="page-title mb-3 mb-md-0 text-gradient">@ViewData["Title"]</h1>
+        </div>
+    </div>
 
-<h4>Service</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <!-- Edit Form Card -->
+    <div class="glass-card p-4 rounded-4 shadow-lg">
+        <form asp-action="Edit" class="needs-validation" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
             <input type="hidden" asp-for="ServiceId" />
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
+
+            <div class="row g-4">
+                <!-- User -->
+                <div class="col-md-6">
+                    <label asp-for="UserId" class="form-label fw-semibold"></label>
+                    <select asp-for="UserId" class="form-select glass-input" asp-items="ViewBag.UserId"></select>
+                    <span asp-validation-for="UserId" class="text-danger small"></span>
+                </div>
+
+                <!-- Category -->
+                <div class="col-md-6">
+                    <label asp-for="ServiceCategoryId" class="form-label fw-semibold"></label>
+                    <select asp-for="ServiceCategoryId" class="form-select glass-input" asp-items="ViewBag.ServiceCategoryId"></select>
+                    <span asp-validation-for="ServiceCategoryId" class="text-danger small"></span>
+                </div>
+
+                <!-- Title -->
+                <div class="col-md-6">
+                    <label asp-for="ServiceTitle" class="form-label fw-semibold"></label>
+                    <input asp-for="ServiceTitle" class="form-control glass-input" placeholder="Enter service title" />
+                    <span asp-validation-for="ServiceTitle" class="text-danger small"></span>
+                </div>
+
+                <!-- Description -->
+                <div class="col-md-6">
+                    <label asp-for="Description" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Description" class="form-control glass-input" rows="3" placeholder="Enter description"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <!-- Cover Image -->
+                <div class="col-md-6">
+                    <label asp-for="CoverImageUrl" class="form-label fw-semibold"></label>
+                    <input asp-for="CoverImageUrl" class="form-control glass-input" placeholder="Enter cover image URL" />
+                    <span asp-validation-for="CoverImageUrl" class="text-danger small"></span>
+
+                    @if (!string.IsNullOrEmpty(Model?.CoverImageUrl))
+                    {
+                        <div class="mt-3">
+                            <img src="@Model.CoverImageUrl" alt="Cover Preview" class="img-thumbnail rounded-4 shadow-sm" style="width:150px; height:150px; object-fit:cover;">
+                        </div>
+                    }
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="ServiceCategoryId" class="control-label"></label>
-                <select asp-for="ServiceCategoryId" class="form-control" asp-items="ViewBag.ServiceCategoryId"></select>
-                <span asp-validation-for="ServiceCategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ServiceTitle" class="control-label"></label>
-                <input asp-for="ServiceTitle" class="form-control" />
-                <span asp-validation-for="ServiceTitle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CoverImageUrl" class="control-label"></label>
-                <input asp-for="CoverImageUrl" class="form-control" />
-                <span asp-validation-for="CoverImageUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <div class="mt-5 d-flex justify-content-end gap-3">
+                <button type="submit" class="btn btn-gradient rounded-pill px-4 py-2 shadow-sm">
+                    <i class="bi bi-save me-2"></i> Save Changes
+                </button>
+                <a asp-action="Index" class="btn btn-outline-light rounded-pill px-4 py-2">
+                    <i class="bi bi-x-circle me-2"></i> Cancel
+                </a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

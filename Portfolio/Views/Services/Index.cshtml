@@ -1,59 +1,108 @@
 ﻿@model IEnumerable<Portfolio.Models.Service>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Services";
 }
 
-<h1>Index</h1>
+<div class="container-fluid page-wrapper mt-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12 d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+            <h1 class="page-title mb-3 mb-md-0 text-gradient">@ViewData["Title"]</h1>
+            <a asp-action="Create" class="btn btn-glass-accent">
+                <i class="bi bi-plus-circle"></i> Create New
+            </a>
+        </div>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ServiceTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CoverImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ServiceCategory)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ServiceTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CoverImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ServiceCategory.ServiceCategoryId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.UserId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ServiceId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ServiceId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ServiceId">Delete</a>
-            </td>
-        </tr>
+    <!-- Search -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-glass shadow-glass">
+                <div class="card-body">
+                    <input type="text" id="searchInput" class="form-control form-control-glass" placeholder="Search Services...">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-glass shadow-glass">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 table-glass">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Cover Image</th>
+                                    <th>Category</th>
+                                    <th>User</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="servicesTable">
+                                @if (Model != null && Model.Any())
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr class="table-row-hover">
+                                            <td>@item.ServiceTitle</td>
+                                            <td>@item.Description</td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(item.CoverImageUrl))
+                                                {
+                                                    <img src="@item.CoverImageUrl" alt="Cover" class="img-thumbnail">
+                                                }
+                                            </td>
+                                            <td>@item.ServiceCategory?.CategoryDesc</td>
+                                            <td>@item.User?.UserName</td>
+                                            <td class="text-center">
+                                                <div class="table-actions-wrapper">
+                                                    <a asp-action="Edit" asp-route-id="@item.ServiceId" class="btn btn-glass btn-sm">
+                                                        <i class="bi bi-pencil-square"></i> Edit
+                                                    </a>
+                                                    <a asp-action="Details" asp-route-id="@item.ServiceId" class="btn btn-glass-accent btn-sm">
+                                                        <i class="bi bi-info-circle"></i> Details
+                                                    </a>
+                                                    <a asp-action="Delete" asp-route-id="@item.ServiceId" class="btn btn-glass-danger btn-sm">
+                                                        <i class="bi bi-trash"></i> Delete
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted">No Services Found</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("searchInput");
+            const rows = document.querySelectorAll("#servicesTable tr");
+
+            searchInput.addEventListener("input", function () {
+                const term = searchInput.value.toLowerCase();
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(term) ? "" : "none";
+                });
+            });
+        });
+    </script>
 }
-    </tbody>
-</table>

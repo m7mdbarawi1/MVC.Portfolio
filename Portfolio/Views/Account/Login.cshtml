@@ -1,0 +1,91 @@
+﻿@model Portfolio.Models.User
+@{
+    ViewData["Title"] = "Login";
+}
+
+<section class="container py-5 mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card card-glass p-4 shadow-glass hover-lift">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold text-gradient">Login</h2>
+                    <p class="text-secondary">Access your portfolio account</p>
+                </div>
+
+                <form asp-action="Login" method="post" class="needs-validation" novalidate>
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label asp-for="UserName" class="form-label fw-semibold"></label>
+                        <input asp-for="UserName" class="form-control form-control-glass" placeholder="Enter username" required pattern="^[A-Za-z0-9]+$" title="Only English letters and numbers are allowed" />
+                        <span asp-validation-for="UserName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <input asp-for="Password" type="password" class="form-control form-control-glass" placeholder="Enter password" required />
+                            <button type="button" class="btn btn-outline-secondary" id="togglePassword" tabindex="-1" aria-label="Show password">
+                                <i class="bi bi-eye-slash" id="toggleIcon"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger py-2 text-center" role="alert">
+                            @ViewBag.Error
+                        </div>
+                    }
+
+                    <button type="submit" class="btn btn-glass-accent w-100 rounded-pill mt-3">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                    </button>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="mb-0 text-secondary">
+                        <a asp-action="Register" class="text-gradient fw-semibold text-decoration-none">Forget your password?</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Restrict username input to English letters and numbers
+            const usernameInput = document.getElementById('UserName');
+            usernameInput.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/[^A-Za-z0-9]/g, '');
+            });
+
+            // Password visibility toggle
+            const passwordInput = document.getElementById('Password');
+            const toggleBtn = document.getElementById('togglePassword');
+            const toggleIcon = document.getElementById('toggleIcon');
+
+            toggleBtn.addEventListener('click', () => {
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
+                toggleIcon.classList.toggle('bi-eye');
+                toggleIcon.classList.toggle('bi-eye-slash');
+            });
+
+            // Bootstrap client-side validation
+            const form = document.querySelector('form');
+            form.addEventListener('submit', (event) => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            });
+        });
+    </script>
+}

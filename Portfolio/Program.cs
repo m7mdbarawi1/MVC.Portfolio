@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Portfolio.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Portfolio;
 
@@ -21,28 +21,25 @@ public class Program
 
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-        // 2️⃣ Identity setup
-        builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-        {
-            options.SignIn.RequireConfirmedAccount = true;
-            options.Password.RequireDigit = true;
-            options.Password.RequireUppercase = false;
-            options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequiredLength = 6;
-        })
-        .AddEntityFrameworkStores<PortfolioContext>();
-
-        // 3️⃣ Localization
+        // 2️⃣ Localization setup
         builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-        builder.Services.AddControllersWithViews()
-            .AddViewLocalization(); // Enables IViewLocalizer
+        builder.Services.AddControllersWithViews();
 
         builder.Services.AddRazorPages();
 
+        // 3️⃣ Authentication setup
+        builder.Services.AddAuthentication("PortfolioAuth")
+            .AddCookie("PortfolioAuth", options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.LogoutPath = "/Account/Logout";
+                options.ExpireTimeSpan = TimeSpan.FromDays(30);
+            });
+
         var app = builder.Build();
 
-        // 4️⃣ Localization configuration
+        // 4️⃣ Supported cultures
         var supportedCultures = new[]
         {
             new CultureInfo("en-US"),
@@ -72,10 +69,11 @@ public class Program
 
         app.UseRouting();
 
+        // ✅ Authentication & Authorization
         app.UseAuthentication();
         app.UseAuthorization();
 
-        // 6️⃣ Route mapping
+        // 6️⃣ Default route
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");

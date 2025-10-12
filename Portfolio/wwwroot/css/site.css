@@ -1,636 +1,862 @@
 /* ==========================================
-   Luxury Blue/Green Modern Theme
-   site.css (extends Bootstrap 5)
+   Luxury Glass Morphism Theme - 20% Reduced Size
+   Enhanced with animations, responsiveness, and dark/light mode
 ========================================== */
 
+/* ============================
+   CSS Variables
+============================ */
 :root {
-    --primary-blue: #1565c0;
-    --secondary-green: #2e7d32;
-    --accent-yellow: #fbc02d;
-    --neutral-light: #f1f5f9;
-    --neutral-dark: #0f172a;
-    --danger-red: #9b1b30;
-    --font-family-base: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --glass-light: rgba(255, 255, 255, 0.1);
+    --glass-dark: rgba(0, 0, 0, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 6.4px 25.6px 0 rgba(31, 38, 135, 0.37); /* 20% reduced */
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a5568;
+    --bg-primary: #f8fafc;
+    --bg-secondary: #e2e8f0;
+    --navbar-height: 64px; /* 20% reduced from 80px */
+}
+
+.dark-theme {
+    --glass-light: rgba(255, 255, 255, 0.05);
+    --glass-dark: rgba(0, 0, 0, 0.3);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 6.4px 25.6px 0 rgba(0, 0, 0, 0.5); /* 20% reduced */
+    --text-primary: #f7fafc;
+    --text-secondary: #cbd5e0;
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
 }
 
 /* ============================
-   Body & Global
+   Base Styles & Animations
 ============================ */
+* {
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+html {
+    scroll-padding-top: var(--navbar-height);
+    scroll-behavior: smooth;
+    font-size: 80%; /* Base font size reduced by 20% */
+}
+
 body {
-    font-family: var(--font-family-base);
-    background-color: var(--neutral-light);
-    color: var(--neutral-dark);
-    transition: background-color 0.3s, color 0.3s;
-    padding-top: 70px; /* prevent overlap with fixed navbar */
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    padding-top: var(--navbar-height);
+    font-size: 0.8rem; /* 20% reduced */
 }
 
 .page-wrapper {
-    min-height: calc(100vh - 120px);
+    margin-bottom: 3.2rem; /* 20% reduced */
 }
 
-.page-title {
-    color: var(--primary-blue);
+/* Section anchors with offset for fixed navbar */
+section {
+    position: relative;
+}
+
+    section::before {
+        content: '';
+        display: block;
+        height: calc(var(--navbar-height) + 16px); /* 20% reduced */
+        margin-top: calc(-1 * var(--navbar-height) - 16px); /* 20% reduced */
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+/* Glass morphism base class */
+.glass-effect {
+    background: var(--glass-light);
+    backdrop-filter: blur(16px) saturate(180%); /* 20% reduced */
+    -webkit-backdrop-filter: blur(16px) saturate(180%); /* 20% reduced */
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+/* Text gradient */
+.text-gradient {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ============================
+   Navbar Glass Styles
+============================ */
+.navbar-glass {
+    background: var(--glass-light) !important;
+    backdrop-filter: blur(16px) saturate(180%); /* 20% reduced */
+    -webkit-backdrop-filter: blur(16px) saturate(180%); /* 20% reduced */
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 3.2px 24px rgba(0, 0, 0, 0.1); /* 20% reduced */
+    padding: 0.6rem 0; /* 20% reduced */
+    min-height: var(--navbar-height);
+}
+
+.brand-text {
     font-weight: 700;
-    font-size: 1.75rem;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.2rem; /* 20% reduced from 1.5rem */
 }
 
-/* ============================
-   Navbar
-============================ */
-.bg-primary-custom {
-    background-color: var(--primary-blue) !important;
+.glass-nav-link {
+    color: var(--text-primary) !important;
+    font-weight: 500;
+    padding: 0.4rem 0.8rem !important; /* 20% reduced */
+    border-radius: 0.6rem; /* 20% reduced */
+    margin: 0 0.2rem; /* 20% reduced */
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 0.8rem; /* 20% reduced */
 }
 
-/* Navbar text size fix */
-.navbar .nav-link {
-    font-size: 0.9rem; /* smaller than default */
-    color: #fff !important;
-}
-
-    .navbar .nav-link:hover,
-    .navbar .dropdown-toggle:hover {
-        color: var(--accent-yellow) !important;
+    .glass-nav-link::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--primary-gradient);
+        opacity: 0.1;
+        transition: left 0.3s ease;
     }
 
+    .glass-nav-link:hover::before {
+        left: 0;
+    }
+
+    .glass-nav-link:hover {
+        transform: translateY(-1.6px); /* 20% reduced */
+    }
+
+.glass-toggle {
+    border: 1px solid var(--glass-border);
+    background: var(--glass-light);
+    padding: 0.2rem 0.4rem; /* 20% reduced */
+}
+
+    .glass-toggle i {
+        color: var(--text-primary);
+        transition: transform 0.2s ease, color 0.2s ease;
+        font-size: 0.8rem; /* 20% reduced */
+    }
+
+    .glass-toggle:hover i {
+        transform: scale(1.1);
+    }
 
 /* ============================
-   Dropdown
+   Language Dropdown Styles
 ============================ */
-.dropdown-menu {
-    border-radius: 0.5rem;
+.dropdown-menu-language {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(4px) saturate(120%); /* 20% reduced */
+    -webkit-backdrop-filter: blur(4px) saturate(120%); /* 20% reduced */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 6.4px 25.6px rgba(0, 0, 0, 0.2); /* 20% reduced */
+    border-radius: 0.6rem; /* 20% reduced */
+    padding: 0.4rem; /* 20% reduced */
+}
+
+.dark-theme .dropdown-menu-language {
+    background: rgba(30, 30, 40, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-menu-language .dropdown-item {
+    color: var(--text-primary) !important;
+    border-radius: 0.4rem; /* 20% reduced */
+    margin: 0.1rem 0; /* 20% reduced */
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-size: 0.8rem; /* 20% reduced */
+    padding: 0.4rem 0.8rem; /* 20% reduced */
+}
+
+    .dropdown-menu-language .dropdown-item:hover {
+        background: var(--primary-gradient);
+        color: white !important;
+        transform: translateX(4px); /* 20% reduced */
+    }
+
+/* ============================
+   Buttons Glass Styles
+============================ */
+.btn-glass {
+    background: var(--glass-light);
+    backdrop-filter: blur(8px); /* 20% reduced */
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-size: 0.8rem; /* 20% reduced */
+    padding: 0.4rem 0.8rem; /* 20% reduced */
+}
+
+    .btn-glass:hover {
+        transform: translateY(-1.6px); /* 20% reduced */
+        box-shadow: 0 4.8px 16px rgba(0, 0, 0, 0.15); /* 20% reduced */
+        color: var(--text-primary);
+    }
+
+.btn-glass-accent {
+    background: var(--accent-gradient);
     border: none;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    z-index: 2000;
+    color: white;
+    font-weight: 500;
+    font-size: 0.8rem; /* 20% reduced */
+    padding: 0.4rem 0.8rem; /* 20% reduced */
 }
 
-    .dropdown-menu .dropdown-item {
-        font-size: 0.9rem;
+    .btn-glass-accent:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1.6px); /* 20% reduced */
+        color: white;
     }
 
-.dropdown-menu-responsive {
-    max-width: 90vw;
-    word-wrap: break-word;
+.btn-glass-danger {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    border: none;
+    color: white;
+    font-weight: 500;
+    font-size: 0.8rem; /* 20% reduced */
+    padding: 0.4rem 0.8rem; /* 20% reduced */
 }
 
-@media (max-width: 576px) {
-    .dropdown-menu-responsive {
-        width: 100% !important;
-        text-align: center;
+    .btn-glass-danger:hover {
+        background: linear-gradient(135deg, #ff5252 0%, #e53935 100%);
+        transform: translateY(-1.6px); /* 20% reduced */
+        color: white;
     }
 
-    .navbar-brand span {
-        display: none;
-    }
+.btn-accent {
+    background: var(--secondary-gradient);
+    border: none;
+    color: white;
+    font-weight: 500;
+    font-size: 0.8rem; /* 20% reduced */
+    padding: 0.4rem 0.8rem; /* 20% reduced */
 }
+
+    .btn-accent:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1.6px); /* 20% reduced */
+        color: white;
+    }
+
+/* ============================
+   Dropdown Glass
+============================ */
+.dropdown-menu-glass {
+    background: var(--glass-light);
+    backdrop-filter: blur(16px) saturate(180%); /* 20% reduced */
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 0.8rem; /* 20% reduced */
+    padding: 0.4rem; /* 20% reduced */
+}
+
+    .dropdown-menu-glass .dropdown-item {
+        color: var(--text-primary);
+        border-radius: 0.4rem; /* 20% reduced */
+        margin: 0.1rem 0; /* 20% reduced */
+        transition: all 0.3s ease;
+        font-size: 0.8rem; /* 20% reduced */
+        padding: 0.4rem 0.8rem; /* 20% reduced */
+    }
+
+        .dropdown-menu-glass .dropdown-item:hover {
+            background: var(--glass-light);
+            transform: translateX(4px); /* 20% reduced */
+        }
+
+/* ============================
+   Cards & Tables
+============================ */
+.card-glass {
+    background: var(--glass-light);
+    backdrop-filter: blur(16px) saturate(180%); /* 20% reduced */
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 1.2rem; /* 20% reduced */
+    overflow: hidden;
+}
+
+.table-glass {
+    backdrop-filter: blur(8px); /* 20% reduced */
+    border-radius: 0.8rem; /* 20% reduced */
+    overflow: hidden;
+    width: 100%;
+}
+
+    .table-glass th {
+        background: var(--primary-gradient);
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 0.8rem; /* 20% reduced */
+        white-space: nowrap;
+        font-size: 0.8rem; /* 20% reduced */
+    }
+
+    .table-glass td {
+        background: var(--glass-light);
+        color: var(--text-primary);
+        border-color: var(--glass-border);
+        padding: 0.8rem; /* 20% reduced */
+        vertical-align: middle;
+        word-break: break-word;
+        white-space: normal;
+        font-size: 0.8rem; /* 20% reduced */
+    }
+
+.table-row-hover {
+    transition: all 0.3s ease;
+}
+
+    .table-row-hover:hover {
+        background: rgba(102, 126, 234, 0.1);
+        transform: scale(1.004); /* 20% reduced */
+    }
+
+        .table-row-hover:hover td {
+            background: rgba(102, 126, 234, 0.12);
+        }
+
+/* Image thumbnail within table */
+.img-thumbnail {
+    max-width: 64px; /* 20% reduced */
+    height: auto;
+    border-radius: 0.4rem; /* 20% reduced */
+    border: 1px solid var(--glass-border);
+    background-color: var(--glass-light);
+    padding: 0.2rem; /* 20% reduced */
+}
+
+/* For action buttons in table */
+.table-actions-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem; /* 20% reduced */
+}
+
+/* ============================
+   Forms
+============================ */
+.form-control-glass {
+    background: var(--glass-light);
+    backdrop-filter: blur(8px); /* 20% reduced */
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    border-radius: 0.6rem; /* 20% reduced */
+    transition: all 0.3s ease;
+    font-size: 0.8rem; /* 20% reduced */
+    padding: 0.4rem 0.8rem; /* 20% reduced */
+}
+
+    .form-control-glass:focus {
+        border-color: var(--glass-border);
+        box-shadow: 0 0 0 0.16rem rgba(102, 126, 234, 0.25); /* 20% reduced */
+        background: var(--glass-light);
+        color: var(--text-primary);
+    }
+
+    .form-control-glass::placeholder {
+        color: var(--text-secondary);
+        opacity: 0.7;
+        font-size: 0.8rem; /* 20% reduced */
+    }
 
 /* ============================
    Footer
 ============================ */
-.footer-custom {
-    background-color: var(--primary-blue);
-    color: #fff;
-    width: 100%;
-    text-align: center;
+.footer-glass {
+    background: var(--glass-light);
+    backdrop-filter: blur(16px) saturate(180%); /* 20% reduced */
+    border-top: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    padding: 1.2rem 0; /* 20% reduced */
 }
 
-    .footer-custom .footer-link {
-        color: #fff;
-        text-decoration: none;
+.footer-link-glass {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 0.2rem 0.4rem; /* 20% reduced */
+    border-radius: 0.4rem; /* 20% reduced */
+    font-size: 0.8rem; /* 20% reduced */
+}
+
+    .footer-link-glass:hover {
+        background: var(--glass-light);
+        transform: translateY(-1.6px); /* 20% reduced */
     }
 
-        .footer-custom .footer-link:hover {
-            color: var(--accent-yellow);
-        }
-
-@media (max-width: 576px) {
-    .footer-custom nav {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
+.social-icon-glass {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; /* 20% reduced */
+    height: 32px; /* 20% reduced */
+    background: var(--glass-light);
+    backdrop-filter: blur(8px); /* 20% reduced */
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    font-size: 0.8rem; /* 20% reduced */
 }
 
-/* ============================
-   Cards
-============================ */
-.card {
-    border: none;
-    border-radius: 0.5rem;
-}
-
-.card-body {
-    padding: 1rem;
-}
-
-/* ============================
-   Tables
-============================ */
-.table {
-    background-color: #fff;
-    border-radius: 0.5rem;
-    width: 100% !important;
-    margin-bottom: 0;
-    table-layout: auto;
-}
-
-    .table th {
-        background-color: var(--primary-blue);
-        color: #fff;
-        white-space: nowrap;
-        padding: 0.75rem 1rem;
-        font-weight: 600;
-    }
-
-    .table td {
-        vertical-align: middle;
-        padding: 0.75rem 1rem;
-    }
-
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: var(--neutral-light);
-}
-
-.table-row-hover:hover {
-    background-color: rgba(21, 101, 192, 0.08); /* light blue hover */
-    transition: background-color 0.2s ease-in-out;
-}
-
-.table-header {
-    border-radius: 0.5rem 0.5rem 0 0;
-}
-
-/* ============================
-   Badges
-============================ */
-.badge {
-    font-size: 0.85rem;
-    font-weight: 500;
-    border-radius: 0.35rem;
-}
-
-/* ============================
-   Buttons (Theme-aligned)
-============================ */
-.btn {
-    font-weight: 500;
-    border-radius: 0.375rem;
-    transition: all 0.2s ease-in-out;
-}
-
-/* Primary (create, main actions) */
-.btn-primary {
-    background-color: var(--primary-blue);
-    border-color: var(--primary-blue);
-    color: #fff;
-}
-
-    .btn-primary:hover {
-        background-color: #0e4ba1;
-        border-color: #0e4ba1;
-        transform: translateY(-2px);
-    }
-
-/* Secondary (edit, neutral actions) */
-.btn-secondary {
-    background-color: var(--secondary-green);
-    border-color: var(--secondary-green);
-    color: #fff;
-}
-
-    .btn-secondary:hover {
-        background-color: #255d27;
-        border-color: #255d27;
-        transform: translateY(-2px);
-    }
-
-/* Accent (details, highlight actions) */
-.btn-accent {
-    background-color: var(--accent-yellow);
-    border-color: var(--accent-yellow);
-    color: var(--neutral-dark);
-}
-
-    .btn-accent:hover {
-        background-color: #f9a825;
-        border-color: #f9a825;
-        color: #fff;
-        transform: translateY(-2px);
-    }
-
-/* Danger (delete, destructive actions) */
-.btn-danger {
-    background-color: var(--danger-red);
-    border-color: var(--danger-red);
-    color: #fff;
-}
-
-    .btn-danger:hover {
-        background-color: #7a1324;
-        border-color: #7a1324;
-        transform: translateY(-2px);
-    }
-
-/* Info, Warning, Success (for badges and extra actions) */
-.btn-info {
-    background-color: #0288d1;
-    border-color: #0288d1;
-    color: #fff;
-}
-
-.btn-warning {
-    background-color: #f9a825;
-    border-color: #f9a825;
-    color: #000;
-}
-
-.btn-success {
-    background-color: #388e3c;
-    border-color: #388e3c;
-    color: #fff;
-}
-
-/* Buttons inside tables */
-.btn-action {
-    min-width: 110px;
-    white-space: nowrap;
-    text-align: center;
-}
-
-    .btn-action:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    .social-icon-glass:hover {
+        background: var(--primary-gradient);
+        color: white;
+        transform: translateY(-2.4px) scale(1.1); /* 20% reduced */
+        box-shadow: 0 6.4px 20px rgba(102, 126, 234, 0.3); /* 20% reduced */
     }
 
 /* ============================
-   Responsive Fixes
+   Chatbot
 ============================ */
-@media (max-width: 768px) {
-    td .d-flex {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .btn-action {
-        width: 100%;
-        margin-bottom: 0.5rem;
-    }
-}
-
-/* ============================
-   Dark Theme Overrides
-============================ */
-.dark-theme body {
-    background-color: var(--neutral-dark);
-    color: var(--neutral-light);
-}
-
-/* Navbar & Footer */
-.dark-theme .navbar,
-.dark-theme .footer-custom {
-    background-color: #000 !important;
-}
-
-/* Cards & Tables */
-.dark-theme .card {
-    background-color: #1e293b;
-    color: var(--neutral-light);
-}
-
-.dark-theme .table {
-    background-color: #1e293b;
-    color: var(--neutral-light);
-}
-
-    .dark-theme .table th {
-        background-color: #0d47a1; /* darker blue for contrast */
-        color: #fff;
-    }
-
-.dark-theme .table-striped tbody tr:nth-of-type(odd) {
-    background-color: #273142;
-}
-
-.dark-theme .table-row-hover:hover {
-    background-color: rgba(21, 101, 192, 0.2);
-}
-
-/* Dropdowns */
-.dark-theme .dropdown-menu {
-    background-color: #1f2937;
-    border: 1px solid #334155;
-    color: var(--neutral-light);
-}
-
-.dark-theme .dropdown-item {
-    color: var(--neutral-light);
-}
-
-    .dark-theme .dropdown-item:hover {
-        background-color: var(--primary-blue);
-        color: #fff;
-    }
-
-.dark-theme .dropdown-divider {
-    border-top: 1px solid #334155;
-}
-
-/* Buttons in Dark Mode */
-.dark-theme .btn-primary {
-    background-color: #1e3a8a;
-    border-color: #1e3a8a;
-}
-
-.dark-theme .btn-secondary {
-    background-color: #1b5e20;
-    border-color: #1b5e20;
-}
-
-.dark-theme .btn-accent {
-    background-color: #fbc02d;
-    border-color: #fbc02d;
-    color: #000;
-}
-
-.dark-theme .btn-danger {
-    background-color: #8b1a2d;
-    border-color: #8b1a2d;
-}
-
-.dark-theme .btn-info {
-    background-color: #0277bd;
-}
-
-.dark-theme .btn-warning {
-    background-color: #f57f17;
-    border-color: #f57f17;
-    color: #fff;
-}
-
-.dark-theme .btn-success {
-    background-color: #1b5e20;
-}
-/* Fix table text in dark theme */
-.dark-theme .table td,
-.dark-theme .table th {
-    color: #f1f5f9 !important; /* light text */
-}
-
-
-/* ============================
-   Welcome Page (Hero + Sections)
-============================ */
-
-/* HERO */
-.hero-section {
-    position: relative;
-    text-align: center;
-    background-size: cover;
-    background-position: center;
-    padding: 4rem 1rem;
-}
-
-    .hero-section h1,
-    .hero-section p {
-        text-shadow: 0 2px 6px rgba(0,0,0,0.6);
-    }
-
-    .hero-section .btn {
-        min-width: 180px;
-    }
-
-/* FEATURES */
-.page-wrapper h2 {
-    color: var(--primary-blue);
-}
-
-.card img {
-    height: 180px;
-    object-fit: cover;
-    border-radius: 0.5rem 0.5rem 0 0;
-}
-
-/* ABOUT */
-.bg-light img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 0.5rem;
-}
-
-/* POPULAR BOOKS */
-#popular-books .card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-    #popular-books .card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    }
-
-/* TESTIMONIALS */
-#testimonials .card {
-    border-left: 5px solid var(--primary-blue);
-    background: #fff;
-}
-
-    #testimonials .card h6 {
-        color: var(--primary-blue);
-    }
-
-/* CTA */
-.cta-section {
-    background: var(--primary-blue);
-    padding: 3rem 1rem;
-}
-
-    .cta-section h2,
-    .cta-section p {
-        color: #fff;
-    }
-
-    .cta-section .btn {
-        font-size: 1.1rem;
-        font-weight: 600;
-    }
-
-/* ============================
-   Dark Theme Overrides
-============================ */
-.dark-theme .hero-section {
-    background-blend-mode: multiply;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.dark-theme .page-wrapper h2,
-.dark-theme #testimonials .card h6 {
-    color: var(--accent-yellow);
-}
-
-.dark-theme .card {
-    background-color: #1e293b;
-    color: var(--neutral-light);
-}
-
-.dark-theme #testimonials .card {
-    background-color: #273142;
-    border-left-color: var(--accent-yellow);
-}
-
-.dark-theme .cta-section {
-    background: #0d47a1;
-}
-/* Section dividers */
-.section-divider {
-    border: 0;
-    height: 2px;
-    background: linear-gradient(to right, transparent, var(--neutral-dark), transparent);
-    margin: 0;
-}
-
-/* Dark theme override */
-.dark-theme .section-divider {
-    background: linear-gradient(to right, transparent, var(--neutral-light), transparent);
-}
-
-
-/* === Chatbot Styles (Light + Dark Theme Support) === */
 #chatbot-container {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 1.6rem; /* 20% reduced */
+    right: 1.6rem; /* 20% reduced */
     z-index: 1050;
 }
 
-/* Floating Chat Button */
-#chatbot-toggle {
-    width: 60px;
-    height: 60px;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: var(--primary-blue);
+.btn-glass-chat {
+    width: 48px; /* 20% reduced */
+    height: 48px; /* 20% reduced */
+    background: var(--primary-gradient);
     border: none;
-    color: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 1rem; /* 20% reduced */
     transition: all 0.3s ease;
+    animation: float 3s ease-in-out infinite;
 }
 
-    #chatbot-toggle:hover {
-        background-color: #0e4ba1;
-        transform: translateY(-3px);
+    .btn-glass-chat:hover {
+        transform: scale(1.1) translateY(-4px); /* 20% reduced */
+        animation: none;
     }
 
-/* Chat Window */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-8px); /* 20% reduced */
+    }
+}
+
 #chatbot-box {
-    width: 320px;
-    max-height: 480px;
+    width: 280px; /* 20% reduced */
+    max-height: 400px; /* 20% reduced */
     position: absolute;
-    bottom: 75px;
+    bottom: 64px; /* 20% reduced */
     right: 0;
     display: flex;
     flex-direction: column;
-    border-radius: 15px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-    background-color: #ffffff;
-    color: var(--neutral-dark);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    border-radius: 1.2rem; /* 20% reduced */
+    opacity: 0;
+    transform: translateY(16px) scale(0.9); /* 20% reduced */
+    transition: all 0.3s ease;
 }
 
-/* Chat messages area */
+    #chatbot-box.chatbox-open {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
 .chat-messages {
     overflow-y: auto;
     flex: 1;
-    max-height: 300px;
-    padding: 10px;
-    border: none;
-    background-color: #f8f9fa;
+    max-height: 240px; /* 20% reduced */
+    padding: 0.8rem; /* 20% reduced */
+    border-radius: 0.8rem; /* 20% reduced */
+    background: var(--glass-light);
+    margin: 0.4rem 0; /* 20% reduced */
 }
 
-/* Chat messages */
 .chat-message {
-    margin-bottom: 10px;
-    padding: 8px 12px;
-    border-radius: 12px;
-    display: inline-block;
-    max-width: 80%;
-    word-wrap: break-word;
+    margin-bottom: 0.8rem; /* 20% reduced */
+    padding: 0.6rem 0.8rem; /* 20% reduced */
+    border-radius: 0.8rem; /* 20% reduced */
+    max-width: 85%;
+    animation: messageSlide 0.3s ease-out;
+    position: relative;
+    font-size: 0.8rem; /* 20% reduced */
 }
 
-    /* User message */
     .chat-message.user {
-        background-color: var(--primary-blue);
-        color: #fff;
-        align-self: flex-end;
+        background: var(--primary-gradient);
+        color: white;
+        margin-left: auto;
+        border-bottom-right-radius: 0.2rem; /* 20% reduced */
     }
 
-    /* Bot message */
     .chat-message.bot {
-        background-color: var(--neutral-light);
-        color: var(--neutral-dark);
-        align-self: flex-start;
+        background: var(--glass-light);
+        color: var(--text-primary);
+        margin-right: auto;
+        border-bottom-left-radius: 0.2rem; /* 20% reduced */
     }
 
-/* Input area */
-#chatbot-box .input-group {
-    border-top: 1px solid #ddd;
-    background-color: #fff;
-    padding-top: 5px;
+.message-content {
+    margin-bottom: 0.2rem; /* 20% reduced */
 }
 
-#chatbot-input {
-    border-radius: 20px 0 0 20px !important;
+.message-time {
+    font-size: 0.6rem; /* 20% reduced */
+    opacity: 0.7;
+    text-align: right;
 }
 
-#chatbot-send {
-    border-radius: 0 20px 20px 0 !important;
-}
-
-/* === Dark Theme Overrides === */
-.dark-theme #chatbot-box {
-    background-color: #1e293b;
-    color: var(--neutral-light);
-    border: 1px solid #334155;
-}
-
-.dark-theme .chat-messages {
-    background-color: #273142;
-    border: none;
-}
-
-.dark-theme .chat-message.user {
-    background-color: #0d47a1;
-    color: #fff;
-}
-
-.dark-theme .chat-message.bot {
-    background-color: #334155;
-    color: #e2e8f0;
-}
-
-.dark-theme #chatbot-toggle {
-    background-color: var(--accent-yellow);
-    color: #000;
-}
-
-    .dark-theme #chatbot-toggle:hover {
-        background-color: #f9a825;
-        transform: translateY(-3px);
+@keyframes messageSlide {
+    from {
+        opacity: 0;
+        transform: translateY(8px); /* 20% reduced */
     }
 
-.dark-theme #chatbot-box .input-group {
-    background-color: #1e293b;
-    border-top: 1px solid #334155;
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.social-icon i {
-    font-size: 1.5rem;
-    color: #ffffff; /* Make icons white */
-    transition: transform 0.2s, color 0.2s;
+/* ============================
+   Hero Section
+============================ */
+.hero-section-glass {
+    min-height: 80vh; /* 20% reduced */
+    background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 50%, rgba(79,172,254,0.1) 100%);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
 }
 
-.social-icon:hover i {
-    transform: scale(1.2);
-    color: #f0f0f0; /* Slightly lighter on hover */
+    .hero-section-glass::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('../images/hero-bg-portfolio.jpg') center/cover no-repeat;
+        opacity: 0.1;
+        z-index: -1;
+    }
+
+.dark-theme .hero-section-glass {
+    background: linear-gradient(135deg, rgba(102,126,234,0.05) 0%, rgba(118,75,162,0.05) 50%, rgba(79,172,254,0.05) 100%);
+}
+
+.hero-photo {
+    border-color: var(--glass-border) !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .hero-photo:hover {
+        transform: scale(1.05);
+        box-shadow: 0 9.6px 32px rgba(0,0,0,0.2) !important; /* 20% reduced */
+    }
+
+/* ============================
+   Section & Dividers
+============================ */
+.section-divider-glass {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--glass-border), transparent);
+    margin: 0;
+    opacity: 0.6;
+}
+
+/* ============================
+   Cards & Projects Animations
+============================ */
+.service-card, .project-card, .skill-item {
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+    .service-card:hover, .project-card:hover, .skill-item:hover {
+        border-color: var(--glass-border);
+        transform: translateY(-4px) scale(1.02); /* 20% reduced */
+    }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px); /* 20% reduced */
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================
+   CTA Section
+============================ */
+.cta-section-glass {
+    background: linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.15) 50%, rgba(79,172,254,0.15) 100%);
+    backdrop-filter: blur(16px); /* 20% reduced */
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.dark-theme .cta-section-glass {
+    background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 50%, rgba(79,172,254,0.1) 100%);
+}
+
+/* ============================
+   Typography & Utility Classes
+============================ */
+.section-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.88rem; /* 20% reduced */
+    font-weight: 300;
+}
+
+.lead {
+    font-size: 1rem; /* 20% reduced */
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+.border-glass {
+    border-color: var(--glass-border) !important;
+}
+
+.shadow-glass {
+    box-shadow: var(--glass-shadow);
+}
+
+.rounded-glass {
+    border-radius: 0.8rem; /* 20% reduced */
+}
+
+.hover-lift {
+    transition: transform 0.3s ease;
+}
+
+    .hover-lift:hover {
+        transform: translateY(-4px); /* 20% reduced */
+    }
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%,100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.enhanced-contrast {
+    color: var(--text-primary) !important;
+    font-weight: 500;
+}
+
+.dark-theme .enhanced-contrast {
+    color: #f8f9fa !important;
+}
+
+/* News slider styles */
+.news-slider {
+    scrollbar-width: thin;
+    scrollbar-color: var(--glass-border) transparent;
+}
+
+    .news-slider::-webkit-scrollbar {
+        height: 4.8px; /* 20% reduced */
+    }
+
+    .news-slider::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .news-slider::-webkit-scrollbar-thumb {
+        background: var(--glass-border);
+        border-radius: 2.4px; /* 20% reduced */
+    }
+
+.news-card {
+    transition: all 0.3s ease;
+}
+
+    .news-card:hover {
+        transform: translateY(-4px); /* 20% reduced */
+    }
+
+/* Icon wrapper for services */
+.icon-wrapper {
+    transition: all 0.3s ease;
+}
+
+.service-card:hover .icon-wrapper {
+    transform: scale(1.1);
+    background: var(--primary-gradient) !important;
+}
+
+    .service-card:hover .icon-wrapper i {
+        color: white !important;
+        -webkit-text-fill-color: white;
+    }
+
+/* ============================
+   Responsive Adjustments
+============================ */
+@media (max-width: 992px) {
+    .table-glass th,
+    .table-glass td {
+        padding: 0.6rem 0.4rem; /* 20% reduced */
+        font-size: 0.72rem; /* 20% reduced */
+    }
+
+    .img-thumbnail {
+        max-width: 48px; /* 20% reduced */
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --navbar-height: 56px; /* 20% reduced */
+    }
+
+    .hero-section-glass {
+        min-height: 64vh; /* 20% reduced */
+        padding: 1.6rem 0; /* 20% reduced */
+    }
+
+    .display-4 {
+        font-size: 2rem; /* 20% reduced */
+    }
+
+    .lead {
+        font-size: 0.88rem; /* 20% reduced */
+    }
+
+    .btn-lg {
+        padding: 0.6rem 1.2rem; /* 20% reduced */
+        font-size: 0.8rem; /* 20% reduced */
+    }
+
+    .navbar-glass {
+        padding: 0.4rem 0; /* 20% reduced */
+    }
+
+    /* Force table to be horizontal scrollable on smaller screens */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table-glass {
+        min-width: 560px; /* 20% reduced */
+    }
+
+        .table-glass th,
+        .table-glass td {
+            white-space: nowrap;
+            padding: 0.48rem 0.32rem; /* 20% reduced */
+            font-size: 0.68rem; /* 20% reduced */
+        }
+
+    .img-thumbnail {
+        max-width: 40px; /* 20% reduced */
+    }
+
+    .table-actions-wrapper .btn {
+        padding: 0.3rem 0.4rem; /* 20% reduced */
+        font-size: 0.64rem; /* 20% reduced */
+    }
+}
+
+@media (max-width: 576px) {
+    :root {
+        --navbar-height: 48px; /* 20% reduced */
+    }
+
+    .hero-section-glass {
+        min-height: 56vh; /* 20% reduced */
+    }
+
+    .display-4 {
+        font-size: 1.6rem; /* 20% reduced */
+    }
+
+    .hero-photo {
+        width: 120px !important; /* 20% reduced */
+        height: 120px !important; /* 20% reduced */
+    }
+
+    .skill-item {
+        padding: 0.6rem; /* 20% reduced */
+        font-size: 0.72rem; /* 20% reduced */
+    }
+
+    #chatbot-box {
+        width: 240px; /* 20% reduced */
+        right: 0.8rem; /* 20% reduced */
+        bottom: 4rem; /* 20% reduced */
+    }
+
+    .table-glass {
+        min-width: 480px; /* 20% reduced */
+    }
+}
+
+/* Skip to content link */
+.visually-hidden-focusable:not(:focus):not(:focus-within) {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0,0,0,0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.visually-hidden-focusable:focus {
+    position: fixed;
+    top: 8px; /* 20% reduced */
+    left: 8px; /* 20% reduced */
+    z-index: 9999;
+    background: var(--primary-gradient);
+    color: white;
+    padding: 0.4rem 0.8rem; /* 20% reduced */
+    border-radius: 0.4rem; /* 20% reduced */
+    text-decoration: none;
+    font-size: 0.8rem; /* 20% reduced */
 }

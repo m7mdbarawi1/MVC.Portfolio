@@ -1,0 +1,106 @@
+﻿@model Portfolio.Models.User
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<section class="container py-5 mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card card-glass p-4 shadow-glass hover-lift">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold text-gradient">My Profile</h2>
+                    <p class="text-secondary">Update your account information</p>
+                </div>
+
+                @if (ViewBag.Success != null)
+                {
+                    <div class="alert alert-success text-center mb-3">
+                        @ViewBag.Success
+                    </div>
+                }
+
+                <form asp-action="MyProfile" method="post" class="needs-validation" novalidate>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="UserId" />
+
+                    <div class="mb-3">
+                        <label asp-for="FirstName" class="form-label fw-semibold"></label>
+                        <input asp-for="FirstName" class="form-control form-control-glass" placeholder="First Name" pattern="^[A-Za-z .]+$" title="Only English letters, spaces, and periods are allowed." required />
+                        <span asp-validation-for="FirstName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="LastName" class="form-label fw-semibold"></label>
+                        <input asp-for="LastName" class="form-control form-control-glass" placeholder="Last Name" pattern="^[A-Za-z .]+$" title="Only English letters, spaces, and periods are allowed." required />
+                        <span asp-validation-for="LastName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="UserName" class="form-label fw-semibold"></label>
+                        <input asp-for="UserName" class="form-control form-control-glass" placeholder="Username" pattern="^[A-Za-z0-9 .]+$" title="Only English letters, numbers, spaces, and periods are allowed." required />
+                        <span asp-validation-for="UserName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label fw-semibold"></label>
+                        <input asp-for="Password" type="password" class="form-control form-control-glass" placeholder="Password" required />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                        <input asp-for="Email" type="email" class="form-control form-control-glass" placeholder="Email" required />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ContactNumber" class="form-label fw-semibold"></label>
+                        <input asp-for="ContactNumber" class="form-control form-control-glass" placeholder="Contact Number" pattern="^\d{10}$" title="Contact number must be exactly 10 digits" />
+                        <span asp-validation-for="ContactNumber" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label fw-semibold"></label>
+                        <textarea asp-for="Description" class="form-control form-control-glass" placeholder="Short description..." rows="3"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-glass-accent w-100 rounded-pill mt-3">
+                        <i class="bi bi-check-circle me-1"></i> Update Profile
+                    </button>
+                </form>
+
+                <!-- Delete Account -->
+                <form asp-action="DeleteMyAccount" method="post" onsubmit="return confirm('Are you sure you want to delete your account?');" class="mt-3">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger w-100 rounded-pill">
+                        <i class="bi bi-trash me-1"></i> Delete Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstNameInput = document.getElementById('FirstName');
+            const lastNameInput = document.getElementById('LastName');
+            const usernameInput = document.getElementById('UserName');
+            const contactInput = document.getElementById('ContactNumber');
+
+            const regexName = /[^A-Za-z .]/g;
+            const regexUsername = /[^A-Za-z0-9 .]/g;
+            const regexContact = /\D/g;
+
+            if (firstNameInput) firstNameInput.addEventListener('input', e => e.target.value = e.target.value.replace(regexName, ''));
+            if (lastNameInput) lastNameInput.addEventListener('input', e => e.target.value = e.target.value.replace(regexName, ''));
+            if (usernameInput) usernameInput.addEventListener('input', e => e.target.value = e.target.value.replace(regexUsername, ''));
+            if (contactInput) contactInput.addEventListener('input', e => e.target.value = e.target.value.replace(regexContact, ''));
+        });
+    </script>
+}

@@ -1,8 +1,324 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Portfolio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- HERO SECTION -->
+<section class="hero-section-glass" id="home">
+    <div class="container">
+        <div class="row align-items-center text-center text-lg-start">
+            <!-- Left Side: Text -->
+            <div class="col-lg-7 mb-4 mb-lg-0">
+                <h1 class="display-4 fw-bold text-gradient mb-3">Hi, I'm Mohammad</h1>
+                <p class="lead mb-4">
+                    A Full-Stack Software Engineer passionate about building modern web applications that combine clean design, smooth user experiences, and reliable performance.
+                    I take pride in delivering projects on time, with high quality, and with a focus on UI/UX design that makes every product both functional and enjoyable to use.
+                    For me, it's about turning ideas into digital solutions that truly make an impact.
+                </p>
+                <div class="mt-4 d-flex justify-content-center justify-content-lg-start gap-3 flex-wrap">
+                    <a href="~/files/Mohammad_CV.pdf" target="_blank" class="btn btn-glass-accent btn-lg rounded-pill px-4">
+                        <i class="bi bi-download me-2"></i> Download CV
+                    </a>
+                    <a asp-controller="Account" asp-action="Contact" class="btn btn-glass btn-lg rounded-pill px-4">
+                        <i class="bi bi-envelope me-2"></i> Contact Me
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Side: Image -->
+            <div class="col-lg-5 text-center">
+                <img src="~/FB_IMG_1727620553061.jpg"
+                     alt="My Photo"
+                     class="rounded-circle img-fluid shadow-glass border border-4 border-glass hero-photo"
+                     style="max-width: 250px; height: auto;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="section-divider-glass" />
+
+<!-- SERVICES SECTION -->
+<section id="services" class="py-5">
+    <div class="container">
+        <div class="row mb-5 text-center">
+            <div class="col-12">
+                <h2 class="fw-bold text-gradient mb-3">My Services</h2>
+                <p class="section-subtitle">What I can do for you</p>
+            </div>
+        </div>
+        <div class="row justify-content-center g-4">
+            <div class="col-md-4">
+                <div class="card card-glass h-100 text-center hover-lift service-card">
+                    <div class="card-body p-4">
+                        <div class="icon-wrapper glass-effect rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                             style="width: 80px; height: 80px;">
+                            <i class="bi bi-code-slash display-6 text-gradient"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Web Development</h5>
+                        <p class="mb-0">Building modern, responsive websites using ASP.NET Core, Bootstrap, and modern frameworks.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-glass h-100 text-center hover-lift service-card">
+                    <div class="card-body p-4">
+                        <div class="icon-wrapper glass-effect rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                             style="width: 80px; height: 80px;">
+                            <i class="bi bi-phone display-6 text-gradient"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Responsive Design</h5>
+                        <p class="mb-0">Ensuring websites look perfect on any device with mobile-first approach and fluid layouts.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-glass h-100 text-center hover-lift service-card">
+                    <div class="card-body p-4">
+                        <div class="icon-wrapper glass-effect rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                             style="width: 80px; height: 80px;">
+                            <i class="bi bi-bar-chart display-6 text-gradient"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Performance Analytics</h5>
+                        <p class="mb-0">Integrating analytics to track, measure, and continuously improve website performance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-glass-accent rounded-pill px-4">View More Services</a>
+        </div>
+    </div>
+</section>
+
+<hr class="section-divider-glass" />
+
+<!-- PROJECTS SECTION -->
+<section id="projects" class="py-5">
+    <div class="container">
+        <div class="row mb-5 text-center">
+            <div class="col-12">
+                <h2 class="fw-bold text-gradient mb-3">My Projects</h2>
+                <p class="section-subtitle">Some of my recent works</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-sm-6 col-lg-4">
+                <div class="card card-glass h-100 hover-lift project-card">
+                    <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="bi bi-laptop display-1 text-gradient"></i>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">E-Commerce Platform</h5>
+                        <p class="card-text mb-3">Full-featured online store with shopping cart, payment integration, and admin dashboard.</p>
+                        <div class="tech-stack mb-3">
+                            <span class="badge glass-effect me-1">ASP.NET Core</span>
+                            <span class="badge glass-effect me-1">Bootstrap 5</span>
+                            <span class="badge glass-effect">SQL Server</span>
+                        </div>
+                        <a href="#" class="btn btn-glass btn-sm rounded-pill">View Project</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+                <div class="card card-glass h-100 hover-lift project-card">
+                    <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="bi bi-graph-up display-1 text-gradient"></i>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Analytics Dashboard</h5>
+                        <p class="card-text mb-3">Real-time data visualization dashboard with interactive charts and reporting.</p>
+                        <div class="tech-stack mb-3">
+                            <span class="badge glass-effect me-1">Chart.js</span>
+                            <span class="badge glass-effect me-1">REST API</span>
+                            <span class="badge glass-effect">MVC</span>
+                        </div>
+                        <a href="#" class="btn btn-glass btn-sm rounded-pill">View Project</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+                <div class="card card-glass h-100 hover-lift project-card">
+                    <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="bi bi-shield-check display-1 text-gradient"></i>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Security System</h5>
+                        <p class="card-text mb-3">Secure authentication and authorization system with role-based access control.</p>
+                        <div class="tech-stack mb-3">
+                            <span class="badge glass-effect me-1">Identity</span>
+                            <span class="badge glass-effect me-1">JWT</span>
+                            <span class="badge glass-effect">HTTPS</span>
+                        </div>
+                        <a href="#" class="btn btn-glass btn-sm rounded-pill">View Project</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-glass-accent rounded-pill px-4">View More Projects</a>
+        </div>
+    </div>
+</section>
+
+<hr class="section-divider-glass" />
+
+<!-- DOCUMENTS SECTION -->
+<section id="documents" class="py-5">
+    <div class="container">
+        <div class="row mb-5 text-center">
+            <div class="col-12">
+                <h2 class="fw-bold text-gradient mb-3">My Documents</h2>
+                <p class="section-subtitle">My certifications, CV, and cover letters</p>
+            </div>
+        </div>
+        <div class="row justify-content-center g-4">
+            <div class="col-md-4">
+                <div class="card card-glass h-100 text-center hover-lift">
+                    <div class="card-body p-4">
+                        <i class="bi bi-patch-check display-5 text-gradient mb-3"></i>
+                        <h5 class="fw-bold mb-3">Certificates</h5>
+                        <p class="mb-0">All my verified certificates in software development and AI.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-glass h-100 text-center hover-lift">
+                    <div class="card-body p-4">
+                        <i class="bi bi-file-earmark-person display-5 text-gradient mb-3"></i>
+                        <h5 class="fw-bold mb-3">Curriculum Vitae</h5>
+                        <p class="mb-0">Detailed CV highlighting my education, experience, and skills.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-glass h-100 text-center hover-lift">
+                    <div class="card-body p-4">
+                        <i class="bi bi-envelope-paper display-5 text-gradient mb-3"></i>
+                        <h5 class="fw-bold mb-3">Cover Letter</h5>
+                        <p class="mb-0">Personalized cover letters tailored for different opportunities.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-glass-accent rounded-pill px-4">View More Documents</a>
+        </div>
+    </div>
+</section>
+
+<hr class="section-divider-glass" />
+
+<!-- NEWS SECTION -->
+<section id="news" class="py-5">
+    <div class="container">
+        <div class="row mb-5 text-center">
+            <div class="col-12">
+                <h2 class="fw-bold text-gradient mb-3">Latest News & Updates</h2>
+                <p class="section-subtitle">Stay updated with my latest work, achievements, and tech insights</p>
+            </div>
+        </div>
+
+        <div class="news-slider d-flex gap-4 overflow-auto pb-3">
+            <div class="card card-glass hover-lift flex-shrink-0 news-card" style="min-width: 340px;">
+                <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 180px;">
+                    <i class="bi bi-newspaper display-3 text-gradient"></i>
+                </div>
+                <div class="card-body p-4">
+                    <span class="badge glass-effect mb-2">October 2025</span>
+                    <h5 class="fw-bold text-gradient mb-2">Portfolio System Completed</h5>
+                    <p class="text-muted small mb-3">Successfully deployed my new responsive portfolio with localization and dark mode.</p>
+                    <a href="#" class="btn btn-glass btn-sm rounded-pill">Read More</a>
+                </div>
+            </div>
+
+            <div class="card card-glass hover-lift flex-shrink-0 news-card" style="min-width: 340px;">
+                <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 180px;">
+                    <i class="bi bi-cpu display-3 text-gradient"></i>
+                </div>
+                <div class="card-body p-4">
+                    <span class="badge glass-effect mb-2">September 2025</span>
+                    <h5 class="fw-bold text-gradient mb-2">New AI Project Launched</h5>
+                    <p class="text-muted small mb-3">Started building an AI-powered fake news detection system using the CIC TruthSeeker dataset.</p>
+                    <a href="#" class="btn btn-glass btn-sm rounded-pill">Read More</a>
+                </div>
+            </div>
+
+            <div class="card card-glass hover-lift flex-shrink-0 news-card" style="min-width: 340px;">
+                <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 180px;">
+                    <i class="bi bi-gear display-3 text-gradient"></i>
+                </div>
+                <div class="card-body p-4">
+                    <span class="badge glass-effect mb-2">August 2025</span>
+                    <h5 class="fw-bold text-gradient mb-2">ERP Demo with Odoo</h5>
+                    <p class="text-muted small mb-3">Implemented a chocolate factory ERP system using Odoo for my university project.</p>
+                    <a href="#" class="btn btn-glass btn-sm rounded-pill">Read More</a>
+                </div>
+            </div>
+
+            <div class="card card-glass hover-lift flex-shrink-0 news-card" style="min-width: 340px;">
+                <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 180px;">
+                    <i class="bi bi-building display-3 text-gradient"></i>
+                </div>
+                <div class="card-body p-4">
+                    <span class="badge glass-effect mb-2">July 2025</span>
+                    <h5 class="fw-bold text-gradient mb-2">School Management System</h5>
+                    <p class="text-muted small mb-3">Developed a .NET MVC school management system with CRUD, roles, and authentication.</p>
+                    <a href="#" class="btn btn-glass btn-sm rounded-pill">Read More</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-glass-accent rounded-pill px-4">View More News</a>
+        </div>
+    </div>
+</section>
+
+<hr class="section-divider-glass" />
+
+<!-- CTA SECTION -->
+<section class="cta-section-glass text-center py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-3">Let's Work Together!</h2>
+                <p class="lead mb-4">Interested in collaborating? Reach out and let's create something amazing together.</p>
+                <a asp-controller="Account" asp-action="Contact" class="btn btn-glass-accent btn-lg rounded-pill px-5">
+                    <i class="bi bi-envelope me-2"></i> Get In Touch
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AUTO SLIDE JS -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const slider = document.querySelector('.news-slider');
+        if (!slider) return;
+
+        let scrollStep = 2;
+        let interval = setInterval(() => {
+            if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth) {
+                slider.scrollLeft = 0;
+            } else {
+                slider.scrollLeft += scrollStep;
+            }
+        }, 30);
+
+        // Pause on hover
+        slider.addEventListener('mouseenter', () => clearInterval(interval));
+        slider.addEventListener('mouseleave', () => {
+            interval = setInterval(() => {
+                if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth) {
+                    slider.scrollLeft = 0;
+                } else {
+                    slider.scrollLeft += scrollStep;
+                }
+            }, 30);
+        });
+    });
+</script>
