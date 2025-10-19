@@ -6,34 +6,33 @@
 
 <div class="container-fluid page-wrapper mt-4">
     <!-- Header -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="page-title text-gradient">@ViewData["Title"]</h1>
-            <p class="text-muted">Fill in the form below to create a new project category.</p>
-        </div>
+    <div class="text-center mb-4">
+        <h1 class="page-title text-gradient mb-2">@ViewData["Title"]</h1>
+        <p class="text-muted">Fill in the form below to create a new project category.</p>
     </div>
 
     <!-- Create Form Card -->
     <div class="glass-card p-4 rounded-4 shadow-glass mx-auto" style="max-width: 500px;">
-        <form asp-action="Create">
+        <form asp-action="Create" novalidate>
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
+            <!-- Category Description -->
             <div class="mb-3">
-                <label asp-for="CategoryDesc" class="form-label"></label>
-                <input asp-for="CategoryDesc" class="form-control" />
-                <span asp-validation-for="CategoryDesc" class="text-danger"></span>
+                <label asp-for="CategoryDesc" class="form-label fw-semibold"></label>
+                <input asp-for="CategoryDesc" class="form-control" placeholder="Enter category description" />
+                <span asp-validation-for="CategoryDesc" class="text-danger small"></span>
             </div>
 
-            <div class="d-flex gap-2">
-                <input type="submit" value="Create" class="btn btn-glass-primary px-4" />
-                <a asp-action="Index" class="btn btn-outline-light px-4">Back to List</a>
+            <!-- Centered Create Button -->
+            <div class="d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-glass-primary px-5 d-flex align-items-center">
+                    <i class="bi bi-plus-circle me-2"></i> Create
+                </button>
             </div>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

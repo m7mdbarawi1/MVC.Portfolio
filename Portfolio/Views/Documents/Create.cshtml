@@ -6,51 +6,56 @@
 
 <div class="container-fluid page-wrapper mt-4">
     <!-- Header -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="page-title text-gradient">@ViewData["Title"]</h1>
-            <p class="text-muted">Fill in the form below to create a new document.</p>
-        </div>
+    <div class="text-center mb-4">
+        <h1 class="page-title text-gradient mb-2">@ViewData["Title"]</h1>
+        <p class="text-muted">Fill in the form below to create a new document.</p>
     </div>
 
     <!-- Create Form Card -->
-    <div class="glass-card p-4 rounded-4 shadow-glass mx-auto" style="max-width: 500px;">
-        <form asp-action="Create">
+    <div class="glass-card p-4 rounded-4 shadow-glass mx-auto" style="max-width: 600px;">
+        <form asp-action="Create" enctype="multipart/form-data" novalidate>
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
+            <!-- User Selection -->
             <div class="mb-3">
-                <label asp-for="UserId" class="form-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <label asp-for="UserId" class="form-label fw-semibold"></label>
+                <select asp-for="UserId" class="form-select" asp-items="ViewBag.UserId">
+                    <option value="">-- Select User --</option>
+                </select>
+                <span asp-validation-for="UserId" class="text-danger small"></span>
             </div>
 
+            <!-- Document Title -->
             <div class="mb-3">
-                <label asp-for="DocumentTitle" class="form-label"></label>
-                <input asp-for="DocumentTitle" class="form-control" />
-                <span asp-validation-for="DocumentTitle" class="text-danger"></span>
+                <label asp-for="DocumentTitle" class="form-label fw-semibold"></label>
+                <input asp-for="DocumentTitle" class="form-control" placeholder="Enter document title" />
+                <span asp-validation-for="DocumentTitle" class="text-danger small"></span>
             </div>
 
+            <!-- Cover Image Upload -->
             <div class="mb-3">
-                <label asp-for="CoverImageUrl" class="form-label"></label>
-                <input asp-for="CoverImageUrl" class="form-control" />
-                <span asp-validation-for="CoverImageUrl" class="text-danger"></span>
+                <label class="form-label fw-semibold">Upload Cover Image</label>
+                <input type="file" name="coverImageFile" class="form-control" accept="image/*" />
+                <span asp-validation-for="CoverImageUrl" class="text-danger small"></span>
             </div>
 
+            <!-- Document File Upload -->
             <div class="mb-3">
-                <label asp-for="DocumentUrl" class="form-label"></label>
-                <input asp-for="DocumentUrl" class="form-control" />
-                <span asp-validation-for="DocumentUrl" class="text-danger"></span>
+                <label class="form-label fw-semibold">Upload Document File</label>
+                <input type="file" name="documentFile" class="form-control" />
+                <span asp-validation-for="DocumentUrl" class="text-danger small"></span>
             </div>
 
-            <div class="d-flex gap-2">
-                <input type="submit" value="Create" class="btn btn-glass-primary px-4" />
-                <a asp-action="Index" class="btn btn-outline-light px-4">Back to List</a>
+            <!-- Centered Create Button -->
+            <div class="d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-glass-primary px-5 d-flex align-items-center">
+                    <i class="bi bi-plus-circle me-2"></i> Create
+                </button>
             </div>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

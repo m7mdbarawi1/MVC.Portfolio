@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,125 +23,115 @@ namespace Portfolio.Controllers
         // GET: Projects
         public async Task<IActionResult> Index()
         {
-            var portfolioContext = _context.Projects.Include(p => p.ProjectCategory).Include(p => p.User);
-            return View(await portfolioContext.ToListAsync());
+            var projects = _context.Projects
+                .Include(p => p.ProjectCategory)
+                .Include(p => p.User);
+            return View(await projects.ToListAsync());
         }
 
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var project = await _context.Projects
                 .Include(p => p.ProjectCategory)
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.ProjectId == id);
-            if (project == null)
-            {
-                return NotFound();
-            }
+                .FirstOrDefaultAsync(p => p.ProjectId == id);
 
-            return View(project);
+            return project == null ? NotFound() : View(project);
         }
 
         // GET: Projects/Create
         public IActionResult Create()
         {
-            ViewData["ProjectCategoryId"] = new SelectList(_context.ProjectCategories, "ProjectCategoryId", "ProjectCategoryId");
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
+            PopulateDropdowns();
             return View();
         }
 
         // POST: Projects/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectId,UserId,ProjectCategoryId,ProjectTitle,Description,CoverImageUrl")] Project project)
+        public async Task<IActionResult> Create(Project project, IFormFile? coverImage)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(project);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                PopulateDropdowns(project);
+                return View(project);
             }
-            ViewData["ProjectCategoryId"] = new SelectList(_context.ProjectCategories, "ProjectCategoryId", "ProjectCategoryId", project.ProjectCategoryId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", project.UserId);
-            return View(project);
+
+            if (coverImage != null && coverImage.Length > 0)
+            {
+                project.CoverImageUrl = await UploadFileAsync(coverImage, "projects");
+            }
+
+            _context.Add(project);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Projects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var project = await _context.Projects.FindAsync(id);
-            if (project == null)
-            {
-                return NotFound();
-            }
-            ViewData["ProjectCategoryId"] = new SelectList(_context.ProjectCategories, "ProjectCategoryId", "ProjectCategoryId", project.ProjectCategoryId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", project.UserId);
+            if (project == null) return NotFound();
+
+            PopulateDropdowns(project);
             return View(project);
         }
 
         // POST: Projects/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProjectId,UserId,ProjectCategoryId,ProjectTitle,Description,CoverImageUrl")] Project project)
+        public async Task<IActionResult> Edit(int id, Project project, IFormFile? coverImage)
         {
-            if (id != project.ProjectId)
+            if (id != project.ProjectId) return NotFound();
+
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                PopulateDropdowns(project);
+                return View(project);
             }
 
-            if (ModelState.IsValid)
+            var existingProject = await _context.Projects.FindAsync(id);
+            if (existingProject == null) return NotFound();
+
+            existingProject.ProjectTitle = project.ProjectTitle;
+            existingProject.Description = project.Description;
+            existingProject.ProjectCategoryId = project.ProjectCategoryId;
+            existingProject.UserId = project.UserId;
+
+            if (coverImage != null && coverImage.Length > 0)
             {
-                try
-                {
-                    _context.Update(project);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProjectExists(project.ProjectId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                existingProject.CoverImageUrl = await UploadFileAsync(coverImage, "projects");
             }
-            ViewData["ProjectCategoryId"] = new SelectList(_context.ProjectCategories, "ProjectCategoryId", "ProjectCategoryId", project.ProjectCategoryId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", project.UserId);
-            return View(project);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProjectExists(id)) return NotFound();
+                throw;
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Projects/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var project = await _context.Projects
                 .Include(p => p.ProjectCategory)
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.ProjectId == id);
-            if (project == null)
-            {
-                return NotFound();
-            }
+                .FirstOrDefaultAsync(p => p.ProjectId == id);
 
-            return View(project);
+            return project == null ? NotFound() : View(project);
         }
 
         // POST: Projects/Delete/5
@@ -152,15 +143,47 @@ namespace Portfolio.Controllers
             if (project != null)
             {
                 _context.Projects.Remove(project);
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProjectExists(int id)
+        // GET: Projects/AllProjects
+        public async Task<IActionResult> AllProjects()
         {
-            return _context.Projects.Any(e => e.ProjectId == id);
+            var projects = await _context.Projects
+                .Include(p => p.ProjectCategory)
+                .Include(p => p.User)
+                .OrderByDescending(p => p.ProjectId)
+                .ToListAsync();
+            return View(projects);
+        }
+
+        private bool ProjectExists(int id) => _context.Projects.Any(p => p.ProjectId == id);
+
+        // Helper method to populate dropdowns
+        private void PopulateDropdowns(Project? project = null)
+        {
+            ViewData["ProjectCategoryId"] = new SelectList(
+                _context.ProjectCategories, "ProjectCategoryId", "CategoryDesc", project?.ProjectCategoryId);
+            ViewData["UserId"] = new SelectList(
+                _context.Users, "UserId", "UserName", project?.UserId);
+        }
+
+        // Helper method to upload files
+        private async Task<string> UploadFileAsync(IFormFile file, string folder)
+        {
+            string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/images/{folder}");
+            if (!Directory.Exists(uploadDir))
+                Directory.CreateDirectory(uploadDir);
+
+            string fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+            string filePath = Path.Combine(uploadDir, fileName);
+
+            using var stream = new FileStream(filePath, FileMode.Create);
+            await file.CopyToAsync(stream);
+
+            return $"/images/{folder}/{fileName}";
         }
     }
 }

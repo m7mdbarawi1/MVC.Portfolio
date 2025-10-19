@@ -12,12 +12,9 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // 1️⃣ Database configuration
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-        builder.Services.AddDbContext<PortfolioContext>(options =>
-            options.UseSqlServer(connectionString));
+        builder.Services.AddDbContext<PortfolioContext>(options => options.UseSqlServer(connectionString));
 
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -29,8 +26,7 @@ public class Program
         builder.Services.AddRazorPages();
 
         // 3️⃣ Authentication setup
-        builder.Services.AddAuthentication("PortfolioAuth")
-            .AddCookie("PortfolioAuth", options =>
+        builder.Services.AddAuthentication("PortfolioAuth").AddCookie("PortfolioAuth", options =>
             {
                 options.LoginPath = "/Account/Login";
                 options.LogoutPath = "/Account/Logout";

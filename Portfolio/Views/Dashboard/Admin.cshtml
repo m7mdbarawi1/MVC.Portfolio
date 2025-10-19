@@ -1,1 +1,113 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container page-wrapper mt-5">
+    <div class="card card-glass border-0 shadow-glass rounded-glass p-4 text-center">
+        <!-- Header -->
+        <h2 class="text-gradient mb-2">
+            <i class="bi bi-speedometer2"></i> Admin Dashboard
+        </h2>
+        <p class="text-secondary small">Welcome, Administrator! Manage your portfolio system efficiently.</p>
+
+        <!-- Dashboard Sections -->
+        <div class="row mt-4 gy-4">
+            <!-- Services -->
+            <div class="col-md-4">
+                <div class="card card-glass section-card p-3 hover-lift text-center h-100">
+                    <div class="icon-wrapper bg-light p-3 rounded-circle mx-auto mb-3 shadow-glass">
+                        <i class="bi bi-tools fs-2 text-gradient"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-1">Manage Services</h5>
+                    <p class="text-secondary small mb-3">
+                        Create, edit, and organize offered services.
+                    </p>
+                    <a asp-controller="Services" asp-action="Index" class="btn btn-glass-accent">
+                        Go to Services
+                    </a>
+                </div>
+            </div>
+
+            <!-- Service Categories -->
+            <div class="col-md-4">
+                <div class="card card-glass section-card p-3 hover-lift text-center h-100">
+                    <div class="icon-wrapper bg-light p-3 rounded-circle mx-auto mb-3 shadow-glass">
+                        <i class="bi bi-grid-3x3-gap fs-2 text-gradient"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-1">Service Categories</h5>
+                    <p class="text-secondary small mb-3">
+                        Manage and classify service categories.
+                    </p>
+                    <a asp-controller="ServiceCategories" asp-action="Index" class="btn btn-glass-accent">
+                        Go to Service Categories
+                    </a>
+                </div>
+            </div>
+
+            <!-- Projects -->
+            <div class="col-md-4">
+                <div class="card card-glass section-card p-3 hover-lift text-center h-100">
+                    <div class="icon-wrapper bg-light p-3 rounded-circle mx-auto mb-3 shadow-glass">
+                        <i class="bi bi-folder2-open fs-2 text-gradient"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-1">Manage Projects</h5>
+                    <p class="text-secondary small mb-3">
+                        Oversee all projects in your portfolio.
+                    </p>
+                    <a asp-controller="Projects" asp-action="Index" class="btn btn-glass-accent">
+                        Go to Projects
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project Categories -->
+            <div class="col-md-4">
+                <div class="card card-glass section-card p-3 hover-lift text-center h-100">
+                    <div class="icon-wrapper bg-light p-3 rounded-circle mx-auto mb-3 shadow-glass">
+                        <i class="bi bi-layers fs-2 text-gradient"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-1">Project Categories</h5>
+                    <p class="text-secondary small mb-3">
+                        Organize your projects by categories.
+                    </p>
+                    <a asp-controller="ProjectCategories" asp-action="Index" class="btn btn-glass-accent">
+                        Go to Project Categories
+                    </a>
+                </div>
+            </div>
+
+            <!-- Documents -->
+            <div class="col-md-4">
+                <div class="card card-glass section-card p-3 hover-lift text-center h-100">
+                    <div class="icon-wrapper bg-light p-3 rounded-circle mx-auto mb-3 shadow-glass">
+                        <i class="bi bi-file-earmark-text fs-2 text-gradient"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-1">Manage Documents</h5>
+                    <p class="text-secondary small mb-3">
+                        Upload, edit, or remove system documents.
+                    </p>
+                    <a asp-controller="Documents" asp-action="Index" class="btn btn-glass-accent">
+                        Go to Documents
+                    </a>
+                </div>
+            </div>
+
+            <!-- News -->
+            <div class="col-md-4">
+                <div class="card card-glass section-card p-3 hover-lift text-center h-100">
+                    <div class="icon-wrapper bg-light p-3 rounded-circle mx-auto mb-3 shadow-glass">
+                        <i class="bi bi-newspaper fs-2 text-gradient"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-1">Manage News</h5>
+                    <p class="text-secondary small mb-3">
+                        Create and manage your latest news and updates.
+                    </p>
+                    <a asp-controller="News" asp-action="Index" class="btn btn-glass-accent">
+                        Go to News
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,153 +1,106 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Data;
 using Portfolio.Models;
 
-namespace Portfolio.Controllers
+namespace Portfolio.Controllers;
+
+public class ServiceCategoriesController : Controller
 {
-    public class ServiceCategoriesController : Controller
+    private readonly PortfolioContext _context;
+
+    public ServiceCategoriesController(PortfolioContext context) => _context = context;
+
+    // GET: ServiceCategories
+    public async Task<IActionResult> Index() =>
+        View(await _context.ServiceCategories.ToListAsync());
+
+    // GET: ServiceCategories/Details/5
+    public async Task<IActionResult> Details(int? id)
     {
-        private readonly PortfolioContext _context;
+        var serviceCategory = await GetCategoryByIdAsync(id);
+        return serviceCategory is null ? NotFound() : View(serviceCategory);
+    }
 
-        public ServiceCategoriesController(PortfolioContext context)
+    // GET: ServiceCategories/Create
+    public IActionResult Create() => View();
+
+    // POST: ServiceCategories/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(ServiceCategory serviceCategory)
+    {
+        if (!ModelState.IsValid) return View(serviceCategory);
+
+        _context.Add(serviceCategory);
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    // GET: ServiceCategories/Edit/5
+    public async Task<IActionResult> Edit(int? id)
+    {
+        var serviceCategory = await GetCategoryByIdAsync(id);
+        return serviceCategory is null ? NotFound() : View(serviceCategory);
+    }
+
+    // POST: ServiceCategories/Edit/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, ServiceCategory serviceCategory)
+    {
+        if (id != serviceCategory.ServiceCategoryId) return NotFound();
+        if (!ModelState.IsValid) return View(serviceCategory);
+
+        try
         {
-            _context = context;
-        }
-
-        // GET: ServiceCategories
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.ServiceCategories.ToListAsync());
-        }
-
-        // GET: ServiceCategories/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var serviceCategory = await _context.ServiceCategories
-                .FirstOrDefaultAsync(m => m.ServiceCategoryId == id);
-            if (serviceCategory == null)
-            {
-                return NotFound();
-            }
-
-            return View(serviceCategory);
-        }
-
-        // GET: ServiceCategories/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ServiceCategories/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ServiceCategoryId,CategoryDesc")] ServiceCategory serviceCategory)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(serviceCategory);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(serviceCategory);
-        }
-
-        // GET: ServiceCategories/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var serviceCategory = await _context.ServiceCategories.FindAsync(id);
-            if (serviceCategory == null)
-            {
-                return NotFound();
-            }
-            return View(serviceCategory);
-        }
-
-        // POST: ServiceCategories/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ServiceCategoryId,CategoryDesc")] ServiceCategory serviceCategory)
-        {
-            if (id != serviceCategory.ServiceCategoryId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(serviceCategory);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ServiceCategoryExists(serviceCategory.ServiceCategoryId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(serviceCategory);
-        }
-
-        // GET: ServiceCategories/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var serviceCategory = await _context.ServiceCategories
-                .FirstOrDefaultAsync(m => m.ServiceCategoryId == id);
-            if (serviceCategory == null)
-            {
-                return NotFound();
-            }
-
-            return View(serviceCategory);
-        }
-
-        // POST: ServiceCategories/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var serviceCategory = await _context.ServiceCategories.FindAsync(id);
-            if (serviceCategory != null)
-            {
-                _context.ServiceCategories.Remove(serviceCategory);
-            }
-
+            _context.Update(serviceCategory);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!ServiceCategoryExists(id)) return NotFound();
+            throw;
         }
 
-        private bool ServiceCategoryExists(int id)
+        return RedirectToAction(nameof(Index));
+    }
+
+    // GET: ServiceCategories/Delete/5
+    public async Task<IActionResult> Delete(int? id)
+    {
+        var serviceCategory = await GetCategoryByIdAsync(id);
+        return serviceCategory is null ? NotFound() : View(serviceCategory);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var serviceCategory = await _context.ServiceCategories
+            .FirstOrDefaultAsync(c => c.ServiceCategoryId == id);
+
+        if (serviceCategory is not null)
         {
-            return _context.ServiceCategories.Any(e => e.ServiceCategoryId == id);
+            _context.ServiceCategories.Remove(serviceCategory);
+            await _context.SaveChangesAsync();
         }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+
+    private bool ServiceCategoryExists(int id) =>
+        _context.ServiceCategories.Any(e => e.ServiceCategoryId == id);
+
+    private async Task<ServiceCategory?> GetCategoryByIdAsync(int? id)
+    {
+        if (id is null) return null;
+
+        return await _context.ServiceCategories
+            .Include(c => c.Services) // optional for Delete/Details
+            .FirstOrDefaultAsync(c => c.ServiceCategoryId == id);
     }
 }

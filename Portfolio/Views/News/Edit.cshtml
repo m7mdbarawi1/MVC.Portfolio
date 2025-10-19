@@ -1,0 +1,75 @@
+﻿@model Portfolio.Models.News
+
+@{
+    ViewData["Title"] = "Edit News";
+}
+
+<div class="container-fluid page-wrapper mt-4">
+    <!-- Header -->
+    <div class="text-center mb-4">
+        <h1 class="page-title text-gradient mb-2">@ViewData["Title"]</h1>
+        <p class="text-muted">Update the news item below.</p>
+    </div>
+
+    <!-- Edit Form Card -->
+    <div class="glass-card p-4 rounded-4 shadow-glass mx-auto" style="max-width: 600px;">
+        <form asp-action="Edit" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <input type="hidden" asp-for="NewsId" />
+
+            <!-- User -->
+            <div class="mb-3">
+                <label asp-for="UserId" class="form-label fw-semibold"></label>
+                <select asp-for="UserId" class="form-select glass-input" asp-items="ViewBag.UserId">
+                    <option value="">Select User</option>
+                </select>
+                <span asp-validation-for="UserId" class="text-danger small"></span>
+            </div>
+
+            <!-- Title -->
+            <div class="mb-3">
+                <label asp-for="NewsTitle" class="form-label fw-semibold"></label>
+                <input asp-for="NewsTitle" class="form-control glass-input" placeholder="Enter news title" />
+                <span asp-validation-for="NewsTitle" class="text-danger small"></span>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+                <label asp-for="NewsDescription" class="form-label fw-semibold"></label>
+                <textarea asp-for="NewsDescription" class="form-control glass-input" rows="3" placeholder="Enter news description"></textarea>
+                <span asp-validation-for="NewsDescription" class="text-danger small"></span>
+            </div>
+
+            <!-- Date -->
+            <div class="mb-3">
+                <label asp-for="NewsDate" class="form-label fw-semibold"></label>
+                <input asp-for="NewsDate" type="date" class="form-control glass-input" />
+                <span asp-validation-for="NewsDate" class="text-danger small"></span>
+            </div>
+
+            <!-- Cover Image Upload -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Cover Image</label>
+                @if (!string.IsNullOrEmpty(Model?.CoverImageUrl))
+                {
+                    <div class="mb-2">
+                        <img src="@Model.CoverImageUrl" alt="Cover Preview" class="img-thumbnail rounded-4 shadow-sm" style="width:150px; height:150px; object-fit:cover;">
+                    </div>
+                }
+                <input type="file" name="coverImage" class="form-control glass-input" />
+                <span asp-validation-for="CoverImageUrl" class="text-danger small"></span>
+            </div>
+
+            <!-- Centered Save Button -->
+            <div class="d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-glass-primary px-5 d-flex align-items-center">
+                    <i class="bi bi-save me-2"></i> Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

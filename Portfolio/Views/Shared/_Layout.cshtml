@@ -1,9 +1,17 @@
 ﻿@using System.Security.Claims
 @using Microsoft.EntityFrameworkCore
+@using Portfolio.Data
+@inject PortfolioContext _context
 
 @{
     var currentCulture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
     var dir = currentCulture.StartsWith("ar") ? "rtl" : "ltr";
+
+    // Fetch the first user's profile image from the database
+    var profileImageUrl = await _context.Users
+        .OrderBy(u => u.UserId)
+        .Select(u => u.CoverImageUrl)
+        .FirstOrDefaultAsync() ?? "~/FB_IMG_1727620553061.jpg";
 }
 
 <!DOCTYPE html>
@@ -24,8 +32,8 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-glass fixed-top" id="mainNavbar">
             <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
-                    <img src="~/FB_IMG_1727620553061.jpg" alt="OBSS Logo" height="40" class="me-2" />
+                <a class="navbar-brand d-flex align-items-center" asp-controller="Account" asp-action="HomeRedirect">
+                    <img src="@profileImageUrl" alt="OBSS Logo" height="40" class="me-2" />
                 </a>
 
                 <button class="navbar-toggler glass-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
@@ -42,11 +50,10 @@
                             <li class="nav-item"><a class="nav-link glass-nav-link" asp-controller="Projects" asp-action="Index">Projects</a></li>
                             <li class="nav-item"><a class="nav-link glass-nav-link" asp-controller="ProjectCategories" asp-action="Index">Project Categories</a></li>
                             <li class="nav-item"><a class="nav-link glass-nav-link" asp-controller="Documents" asp-action="Index">Documents</a></li>
-                            <li class="nav-item"><a class="nav-link glass-nav-link" asp-controller="Documents" asp-action="Index">News</a></li>
+                            <li class="nav-item"><a class="nav-link glass-nav-link" asp-controller="News" asp-action="Index">News</a></li>
                         }
                         else
                         {
-                            <!-- Guest users: scroll sections -->
                             <li class="nav-item"><a class="nav-link glass-nav-link" href="#services">Services</a></li>
                             <li class="nav-item"><a class="nav-link glass-nav-link" href="#projects">Projects</a></li>
                             <li class="nav-item"><a class="nav-link glass-nav-link" href="#documents">Documents</a></li>
@@ -59,31 +66,6 @@
                         <button id="themeToggle" class="btn btn-glass btn-sm rounded-pill" aria-label="Toggle theme">
                             <i class="bi bi-sun-fill theme-icon"></i>
                         </button>
-
-                        <!-- Language dropdown -->
-                        <div class="dropdown">
-                            <button class="btn btn-glass btn-sm dropdown-toggle rounded-pill" type="button" id="languageDropdown"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-translate me-1"></i>Language
-                            </button>
-
-                            <ul class="dropdown-menu dropdown-menu-language dropdown-menu-end" aria-labelledby="languageDropdown">
-                                <li>
-                                    <form asp-controller="Language" asp-action="SetLanguage" method="post" class="d-inline lang-form">
-                                        <input type="hidden" name="culture" value="en-US" />
-                                        <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
-                                        <button type="submit" class="dropdown-item"><i class="bi bi-flag-fill me-2"></i>English</button>
-                                    </form>
-                                </li>
-                                <li>
-                                    <form asp-controller="Language" asp-action="SetLanguage" method="post" class="d-inline lang-form">
-                                        <input type="hidden" name="culture" value="ar-JO" />
-                                        <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
-                                        <button type="submit" class="dropdown-item"><i class="bi bi-flag-fill me-2"></i>Arabic</button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
 
                         <!-- Authentication -->
                         @if (User.Identity?.IsAuthenticated ?? false)
@@ -133,28 +115,6 @@
         </div>
     </main>
 
-    <!-- Chatbot Floating Button -->
-    <div id="chatbot-container">
-        <button id="chatbot-toggle" class="btn btn-glass-chat rounded-circle shadow-lg">
-            <i id="chatbot-icon" class="bi bi-robot"></i>
-        </button>
-        <div id="chatbot-box" class="card card-glass p-3" style="display:none;">
-            <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
-                <h6 class="mb-0 text-gradient"><i class="bi bi-robot me-2"></i>AI Assistant</h6>
-                <button id="chatbot-close" class="btn btn-sm btn-glass rounded-circle">
-                    <i class="bi bi-x"></i>
-                </button>
-            </div>
-            <div id="chatbot-messages" class="chat-messages mb-3"></div>
-            <div class="input-group">
-                <input type="text" id="chatbot-input" class="form-control form-control-glass" placeholder="Ask me anything..." />
-                <button id="chatbot-send" class="btn btn-glass-accent rounded-end">
-                    <i class="bi bi-send"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Footer -->
     <footer class="footer-glass mt-auto pt-5 pb-3">
         <div class="container">
@@ -183,9 +143,14 @@
 
                 <div class="col-md-3 d-flex flex-column align-items-center">
                     <h6 class="fw-bold text-gradient">Contact info</h6>
-                    <p class="small mt-3 mb-1">Email: m7mdbarawi@gmail.com</p>
-                    <p class="small mb-2">Phone: +962795669598</p>
+                    <p class="small mt-3 mb-1">
+                        Email: <a href="mailto:m7mdbarawi@gmail.com" class="text-decoration-none text-gradient">m7mdbarawi@gmail.com</a>
+                    </p>
+                    <p class="small mb-2">
+                        Phone: <a href="tel:+962795669598" class="text-decoration-none text-gradient">+962795669598</a>
+                    </p>
                 </div>
+
             </div>
         </div>
     </footer>
@@ -272,73 +237,6 @@
             });
 
             initTheme();
-        });
-
-        // Chatbot functionality
-        document.addEventListener('DOMContentLoaded', () => {
-            const toggleBtn = document.getElementById('chatbot-toggle');
-            const chatBox = document.getElementById('chatbot-box');
-            const closeBtn = document.getElementById('chatbot-close');
-            const sendBtn = document.getElementById('chatbot-send');
-            const input = document.getElementById('chatbot-input');
-            const messages = document.getElementById('chatbot-messages');
-            const icon = document.getElementById('chatbot-icon');
-
-            toggleBtn.addEventListener('click', () => {
-                const isVisible = chatBox.style.display === 'block';
-                chatBox.style.display = isVisible ? 'none' : 'block';
-                chatBox.classList.toggle('chatbox-open', !isVisible);
-                icon.className = isVisible ? 'bi bi-robot' : 'bi bi-x-lg';
-
-                if (!isVisible) {
-                    input.focus();
-                }
-            });
-
-            closeBtn.addEventListener('click', () => {
-                chatBox.style.display = 'none';
-                chatBox.classList.remove('chatbox-open');
-                icon.className = 'bi bi-robot';
-            });
-
-            function addMessage(sender, text) {
-                const div = document.createElement('div');
-                div.classList.add('chat-message', sender);
-
-                const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                div.innerHTML = `
-                    <div class="message-content">${text}</div>
-                    <div class="message-time">${time}</div>
-                `;
-
-                messages.appendChild(div);
-                messages.scrollTop = messages.scrollHeight;
-            }
-
-            function sendMessage() {
-                const text = input.value.trim();
-                if (!text) return;
-
-                addMessage('user', text);
-                input.value = '';
-
-                // Simulate bot response
-                setTimeout(() => {
-                    const responses = [
-                        "I'm here to help! How can I assist you today?",
-                        "That's a great question! Let me find the best answer for you.",
-                        "I understand your query. Here's what I can tell you...",
-                        "Thanks for reaching out! Here's some information that might help."
-                    ];
-                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                    addMessage('bot', randomResponse);
-                }, 1000 + Math.random() * 2000);
-            }
-
-            sendBtn.addEventListener('click', sendMessage);
-            input.addEventListener('keypress', e => {
-                if (e.key === 'Enter') sendMessage();
-            });
         });
     </script>
 

@@ -2,23 +2,33 @@
     ViewData["Title"] = "Portfolio";
 }
 
+@{
+    ViewData["Title"] = "Portfolio";
+    var user = ViewBag.User as Portfolio.Models.User;
+}
+
 <!-- HERO SECTION -->
 <section class="hero-section-glass" id="home">
     <div class="container">
         <div class="row align-items-center text-center text-lg-start">
             <!-- Left Side: Text -->
             <div class="col-lg-7 mb-4 mb-lg-0">
-                <h1 class="display-4 fw-bold text-gradient mb-3">Hi, I'm Mohammad</h1>
+                <h1 class="display-4 fw-bold text-gradient mb-3">
+                    Hi, I'm @(user?.FirstName ?? "Mohammad")
+                </h1>
+
                 <p class="lead mb-4">
-                    A Full-Stack Software Engineer passionate about building modern web applications that combine clean design, smooth user experiences, and reliable performance.
-                    I take pride in delivering projects on time, with high quality, and with a focus on UI/UX design that makes every product both functional and enjoyable to use.
-                    For me, it's about turning ideas into digital solutions that truly make an impact.
+                    @(string.IsNullOrWhiteSpace(user?.Description)
+                        ? "A Full-Stack Software Engineer passionate about building modern web applications that combine clean design, smooth user experiences, and reliable performance. I take pride in delivering projects on time, with high quality, and with a focus on UI/UX design that makes every product both functional and enjoyable to use. For me, it's about turning ideas into digital solutions that truly make an impact."
+                        : user.Description)
                 </p>
+
                 <div class="mt-4 d-flex justify-content-center justify-content-lg-start gap-3 flex-wrap">
-                    <a href="~/files/Mohammad_CV.pdf" target="_blank" class="btn btn-glass-accent btn-lg rounded-pill px-4">
+                    <a href="~/uploads/documents/Mohammad_CV.pdf" download="Mohammad_CV.pdf" class="btn btn-glass-accent btn-lg rounded-pill px-4">
                         <i class="bi bi-download me-2"></i> Download CV
                     </a>
-                    <a asp-controller="Account" asp-action="Contact" class="btn btn-glass btn-lg rounded-pill px-4">
+
+                    <a href="mailto:@(user?.Email ?? "m7mdbarawi@gmail.com")" class="btn btn-glass btn-lg rounded-pill px-4">
                         <i class="bi bi-envelope me-2"></i> Contact Me
                     </a>
                 </div>
@@ -26,14 +36,15 @@
 
             <!-- Right Side: Image -->
             <div class="col-lg-5 text-center">
-                <img src="~/FB_IMG_1727620553061.jpg"
-                     alt="My Photo"
+                <img src="@(user?.CoverImageUrl ?? "~/FB_IMG_1727620553061.jpg")"
+                     alt="Profile Photo"
                      class="rounded-circle img-fluid shadow-glass border border-4 border-glass hero-photo"
                      style="max-width: 250px; height: auto;">
             </div>
         </div>
     </div>
 </section>
+
 
 <hr class="section-divider-glass" />
 
@@ -47,46 +58,38 @@
             </div>
         </div>
         <div class="row justify-content-center g-4">
-            <div class="col-md-4">
-                <div class="card card-glass h-100 text-center hover-lift service-card">
-                    <div class="card-body p-4">
-                        <div class="icon-wrapper glass-effect rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                             style="width: 80px; height: 80px;">
-                            <i class="bi bi-code-slash display-6 text-gradient"></i>
-                        </div>
-                        <h5 class="fw-bold mb-3">Web Development</h5>
-                        <p class="mb-0">Building modern, responsive websites using ASP.NET Core, Bootstrap, and modern frameworks.</p>
+            @if (ViewBag.Services != null && ViewBag.Services.Count > 0)
+            {
+                @foreach (var service in ViewBag.Services)
+                {
+                    <div class="col-md-4">
+                        <a asp-controller="Services" asp-action="Details" asp-route-id="@service.ServiceId" class="text-decoration-none text-reset">
+                            <div class="card card-glass h-100 text-center hover-lift service-card">
+                                <div class="card-body p-4">
+                                    <div class="icon-wrapper glass-effect rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                         style="width: 80px; height: 80px;">
+                                        <i class="bi bi-code-slash display-6 text-gradient"></i>
+                                    </div>
+                                    <h5 class="fw-bold mb-3">@service.ServiceTitle</h5>
+                                    <p class="mb-0">@service.Description</p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center">
+                    <p class="text-muted">No services available at the moment.</p>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-glass h-100 text-center hover-lift service-card">
-                    <div class="card-body p-4">
-                        <div class="icon-wrapper glass-effect rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                             style="width: 80px; height: 80px;">
-                            <i class="bi bi-phone display-6 text-gradient"></i>
-                        </div>
-                        <h5 class="fw-bold mb-3">Responsive Design</h5>
-                        <p class="mb-0">Ensuring websites look perfect on any device with mobile-first approach and fluid layouts.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-glass h-100 text-center hover-lift service-card">
-                    <div class="card-body p-4">
-                        <div class="icon-wrapper glass-effect rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                             style="width: 80px; height: 80px;">
-                            <i class="bi bi-bar-chart display-6 text-gradient"></i>
-                        </div>
-                        <h5 class="fw-bold mb-3">Performance Analytics</h5>
-                        <p class="mb-0">Integrating analytics to track, measure, and continuously improve website performance.</p>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
 
         <div class="text-center mt-5">
-            <a href="#" class="btn btn-glass-accent rounded-pill px-4">View More Services</a>
+            <a asp-controller="Services" asp-action="AllServices" class="btn btn-glass-accent rounded-pill px-4">
+                View More Services
+            </a>
         </div>
     </div>
 </section>
@@ -103,61 +106,50 @@
             </div>
         </div>
         <div class="row g-4">
-            <div class="col-sm-6 col-lg-4">
-                <div class="card card-glass h-100 hover-lift project-card">
-                    <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 200px;">
-                        <i class="bi bi-laptop display-1 text-gradient"></i>
+            @if (ViewBag.Projects != null && ViewBag.Projects.Count > 0)
+            {
+                @foreach (var project in ViewBag.Projects)
+                {
+                    <div class="col-sm-6 col-lg-4">
+                        <a asp-controller="Projects" asp-action="Details" asp-route-id="@project.ProjectId" class="text-decoration-none text-reset">
+                            <div class="card card-glass h-100 hover-lift project-card">
+                                @if (!string.IsNullOrEmpty(project.CoverImageUrl))
+                                {
+                                    <img src="@Url.Content(project.CoverImageUrl)" class="card-img-top" alt="@project.ProjectTitle" style="height: 200px; object-fit: cover;">
+                                }
+                                else
+                                {
+                                    <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 200px;">
+                                        <i class="bi bi-laptop display-1 text-gradient"></i>
+                                    </div>
+                                }
+                                <div class="card-body p-4">
+                                    <h5 class="card-title fw-bold mb-3">@project.ProjectTitle</h5>
+                                    <p class="card-text mb-3">@project.Description</p>
+                                    @if (project.ProjectCategory != null)
+                                    {
+                                        <div class="tech-stack mb-3">
+                                            <span class="badge glass-effect me-1">@project.ProjectCategory.CategoryDesc</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title fw-bold mb-3">E-Commerce Platform</h5>
-                        <p class="card-text mb-3">Full-featured online store with shopping cart, payment integration, and admin dashboard.</p>
-                        <div class="tech-stack mb-3">
-                            <span class="badge glass-effect me-1">ASP.NET Core</span>
-                            <span class="badge glass-effect me-1">Bootstrap 5</span>
-                            <span class="badge glass-effect">SQL Server</span>
-                        </div>
-                        <a href="#" class="btn btn-glass btn-sm rounded-pill">View Project</a>
-                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center">
+                    <p class="text-muted">No projects available at the moment.</p>
                 </div>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-                <div class="card card-glass h-100 hover-lift project-card">
-                    <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 200px;">
-                        <i class="bi bi-graph-up display-1 text-gradient"></i>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title fw-bold mb-3">Analytics Dashboard</h5>
-                        <p class="card-text mb-3">Real-time data visualization dashboard with interactive charts and reporting.</p>
-                        <div class="tech-stack mb-3">
-                            <span class="badge glass-effect me-1">Chart.js</span>
-                            <span class="badge glass-effect me-1">REST API</span>
-                            <span class="badge glass-effect">MVC</span>
-                        </div>
-                        <a href="#" class="btn btn-glass btn-sm rounded-pill">View Project</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-                <div class="card card-glass h-100 hover-lift project-card">
-                    <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 200px;">
-                        <i class="bi bi-shield-check display-1 text-gradient"></i>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title fw-bold mb-3">Security System</h5>
-                        <p class="card-text mb-3">Secure authentication and authorization system with role-based access control.</p>
-                        <div class="tech-stack mb-3">
-                            <span class="badge glass-effect me-1">Identity</span>
-                            <span class="badge glass-effect me-1">JWT</span>
-                            <span class="badge glass-effect">HTTPS</span>
-                        </div>
-                        <a href="#" class="btn btn-glass btn-sm rounded-pill">View Project</a>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
 
         <div class="text-center mt-5">
-            <a href="#" class="btn btn-glass-accent rounded-pill px-4">View More Projects</a>
+            <a asp-controller="Projects" asp-action="AllProjects" class="btn btn-glass-accent rounded-pill px-4">
+                View More Projects
+            </a>
         </div>
     </div>
 </section>
@@ -174,37 +166,51 @@
             </div>
         </div>
         <div class="row justify-content-center g-4">
-            <div class="col-md-4">
-                <div class="card card-glass h-100 text-center hover-lift">
-                    <div class="card-body p-4">
-                        <i class="bi bi-patch-check display-5 text-gradient mb-3"></i>
-                        <h5 class="fw-bold mb-3">Certificates</h5>
-                        <p class="mb-0">All my verified certificates in software development and AI.</p>
+            @if (ViewBag.Documents != null && ViewBag.Documents.Count > 0)
+            {
+                @foreach (var document in ViewBag.Documents)
+                {
+                    <div class="col-md-4">
+                        <div class="card card-glass h-100 text-center hover-lift"
+                             style="cursor: pointer;"
+                             onclick="window.location='@Url.Action("Details", "Documents", new { id = document.DocumentId })'">
+                            <div class="card-body p-4">
+                                <i class="bi bi-file-earmark display-5 text-gradient mb-3"></i>
+                                <h5 class="fw-bold mb-3">@document.DocumentTitle</h5>
+
+                                @if (!string.IsNullOrEmpty(document.DocumentUrl))
+                                {
+                                    <div class="mt-3">
+                                        <a asp-controller="Documents"
+                                           asp-action="Download"
+                                           asp-route-id="@document.DocumentId"
+                                           class="btn btn-glass btn-sm rounded-pill"
+                                           onclick="event.stopPropagation();">
+                                            Download Document
+                                        </a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p class="text-muted mb-0">No document available.</p>
+                                }
+                            </div>
+                        </div>
                     </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center">
+                    <p class="text-muted">No documents available at the moment.</p>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-glass h-100 text-center hover-lift">
-                    <div class="card-body p-4">
-                        <i class="bi bi-file-earmark-person display-5 text-gradient mb-3"></i>
-                        <h5 class="fw-bold mb-3">Curriculum Vitae</h5>
-                        <p class="mb-0">Detailed CV highlighting my education, experience, and skills.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-glass h-100 text-center hover-lift">
-                    <div class="card-body p-4">
-                        <i class="bi bi-envelope-paper display-5 text-gradient mb-3"></i>
-                        <h5 class="fw-bold mb-3">Cover Letter</h5>
-                        <p class="mb-0">Personalized cover letters tailored for different opportunities.</p>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
 
         <div class="text-center mt-5">
-            <a href="#" class="btn btn-glass-accent rounded-pill px-4">View More Documents</a>
+            <a asp-controller="Documents" asp-action="AllDocuments" class="btn btn-glass-accent rounded-pill px-4">
+                View More Documents
+            </a>
         </div>
     </div>
 </section>
@@ -222,71 +228,60 @@
         </div>
 
         <div class="news-slider d-flex gap-4 overflow-auto pb-3">
-            <div class="card card-glass hover-lift flex-shrink-0 news-card" style="min-width: 340px;">
-                <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 180px;">
-                    <i class="bi bi-newspaper display-3 text-gradient"></i>
+            @if (ViewBag.News != null && ViewBag.News.Count > 0)
+            {
+                @foreach (var news in ViewBag.News)
+                {
+                    <a asp-controller="News" asp-action="Details" asp-route-id="@news.NewsId" class="text-decoration-none text-reset">
+                        <div class="card card-glass hover-lift flex-shrink-0 news-card" style="min-width: 340px;">
+                            @if (!string.IsNullOrEmpty(news.CoverImageUrl))
+                            {
+                                <img src="@Url.Content(news.CoverImageUrl)" class="card-img-top" alt="@news.NewsTitle" style="height: 180px; object-fit: cover;">
+                            }
+                            else
+                            {
+                                <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 180px;">
+                                    <i class="bi bi-newspaper display-3 text-gradient"></i>
+                                </div>
+                            }
+                            <div class="card-body p-4">
+                                <span class="badge glass-effect mb-2">@news.NewsDate.ToString("MMMM yyyy")</span>
+                                <h5 class="fw-bold text-gradient mb-2">@news.NewsTitle</h5>
+                                <p class="text-muted small mb-3">
+                                    @(news.NewsDescription.Length > 100 ? news.NewsDescription.Substring(0, 100) + "..." : news.NewsDescription)
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center">
+                    <p class="text-muted">No news available at the moment.</p>
                 </div>
-                <div class="card-body p-4">
-                    <span class="badge glass-effect mb-2">October 2025</span>
-                    <h5 class="fw-bold text-gradient mb-2">Portfolio System Completed</h5>
-                    <p class="text-muted small mb-3">Successfully deployed my new responsive portfolio with localization and dark mode.</p>
-                    <a href="#" class="btn btn-glass btn-sm rounded-pill">Read More</a>
-                </div>
-            </div>
-
-            <div class="card card-glass hover-lift flex-shrink-0 news-card" style="min-width: 340px;">
-                <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 180px;">
-                    <i class="bi bi-cpu display-3 text-gradient"></i>
-                </div>
-                <div class="card-body p-4">
-                    <span class="badge glass-effect mb-2">September 2025</span>
-                    <h5 class="fw-bold text-gradient mb-2">New AI Project Launched</h5>
-                    <p class="text-muted small mb-3">Started building an AI-powered fake news detection system using the CIC TruthSeeker dataset.</p>
-                    <a href="#" class="btn btn-glass btn-sm rounded-pill">Read More</a>
-                </div>
-            </div>
-
-            <div class="card card-glass hover-lift flex-shrink-0 news-card" style="min-width: 340px;">
-                <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 180px;">
-                    <i class="bi bi-gear display-3 text-gradient"></i>
-                </div>
-                <div class="card-body p-4">
-                    <span class="badge glass-effect mb-2">August 2025</span>
-                    <h5 class="fw-bold text-gradient mb-2">ERP Demo with Odoo</h5>
-                    <p class="text-muted small mb-3">Implemented a chocolate factory ERP system using Odoo for my university project.</p>
-                    <a href="#" class="btn btn-glass btn-sm rounded-pill">Read More</a>
-                </div>
-            </div>
-
-            <div class="card card-glass hover-lift flex-shrink-0 news-card" style="min-width: 340px;">
-                <div class="card-img-top glass-effect d-flex align-items-center justify-content-center" style="height: 180px;">
-                    <i class="bi bi-building display-3 text-gradient"></i>
-                </div>
-                <div class="card-body p-4">
-                    <span class="badge glass-effect mb-2">July 2025</span>
-                    <h5 class="fw-bold text-gradient mb-2">School Management System</h5>
-                    <p class="text-muted small mb-3">Developed a .NET MVC school management system with CRUD, roles, and authentication.</p>
-                    <a href="#" class="btn btn-glass btn-sm rounded-pill">Read More</a>
-                </div>
-            </div>
+            }
         </div>
 
         <div class="text-center mt-5">
-            <a href="#" class="btn btn-glass-accent rounded-pill px-4">View More News</a>
+            <a asp-controller="News" asp-action="AllNews" class="btn btn-glass-accent rounded-pill px-4">
+                View More News
+            </a>
         </div>
     </div>
 </section>
 
 <hr class="section-divider-glass" />
 
-<!-- CTA SECTION -->
-<section class="cta-section-glass text-center py-5">
+<!-- CONTACT SECTION -->
+<section id="contact" class="cta-section-glass text-center py-5">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <h2 class="fw-bold mb-3">Let's Work Together!</h2>
                 <p class="lead mb-4">Interested in collaborating? Reach out and let's create something amazing together.</p>
-                <a asp-controller="Account" asp-action="Contact" class="btn btn-glass-accent btn-lg rounded-pill px-5">
+
+                <a href="mailto:m7mdbarawi@gmail.com" class="btn btn-glass-accent btn-lg rounded-pill px-5">
                     <i class="bi bi-envelope me-2"></i> Get In Touch
                 </a>
             </div>

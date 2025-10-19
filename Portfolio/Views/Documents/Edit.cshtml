@@ -6,15 +6,14 @@
 
 <div class="container-fluid page-wrapper mt-4">
     <!-- Header -->
-    <div class="row mb-4">
-        <div class="col-12 d-flex flex-column flex-md-row justify-content-between align-items-md-center">
-            <h1 class="page-title mb-3 mb-md-0 text-gradient">@ViewData["Title"]</h1>
-        </div>
+    <div class="text-center mb-4">
+        <h1 class="page-title text-gradient mb-2">@ViewData["Title"]</h1>
+        <p class="text-muted">Update the document details below.</p>
     </div>
 
     <!-- Edit Form Card -->
     <div class="glass-card p-4 rounded-4 shadow-glass mx-auto" style="max-width: 500px;">
-        <form asp-action="Edit" class="needs-validation" novalidate>
+        <form asp-action="Edit" enctype="multipart/form-data" class="needs-validation" novalidate>
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
             <input type="hidden" asp-for="DocumentId" />
 
@@ -34,35 +33,47 @@
                 <span asp-validation-for="DocumentTitle" class="text-danger small"></span>
             </div>
 
-            <!-- Cover Image URL -->
+            <!-- Cover Image Upload -->
             <div class="mb-3">
-                <label asp-for="CoverImageUrl" class="form-label fw-semibold"></label>
-                <input asp-for="CoverImageUrl" class="form-control glass-input" placeholder="Enter cover image URL" />
+                <label class="form-label fw-semibold">Cover Image</label>
+                @if (!string.IsNullOrEmpty(Model.CoverImageUrl))
+                {
+                    <div class="mb-2">
+                        <img src="@Model.CoverImageUrl" alt="Cover Image" class="img-fluid rounded shadow-sm" style="max-height: 150px;" />
+                    </div>
+                }
+                <input type="file" name="coverImageFile" class="form-control glass-input" />
                 <span asp-validation-for="CoverImageUrl" class="text-danger small"></span>
             </div>
 
-            <!-- Document URL -->
+            <!-- Existing Document Link -->
+            @if (!string.IsNullOrEmpty(Model.DocumentUrl))
+            {
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Current Document:</label>
+                    <div>
+                        <a href="@Model.DocumentUrl" target="_blank">View Document</a>
+                    </div>
+                </div>
+            }
+
+            <!-- Document File Upload -->
             <div class="mb-3">
-                <label asp-for="DocumentUrl" class="form-label fw-semibold"></label>
-                <input asp-for="DocumentUrl" class="form-control glass-input" placeholder="Enter document URL" />
+                <label class="form-label fw-semibold">Replace Document</label>
+                <input type="file" name="documentFile" class="form-control glass-input" />
                 <span asp-validation-for="DocumentUrl" class="text-danger small"></span>
             </div>
 
-            <!-- Buttons -->
-            <div class="d-flex justify-content-end gap-3">
-                <button type="submit" class="btn btn-glass-accent rounded-pill px-4 py-2 shadow-sm">
+            <!-- Centered Save Button -->
+            <div class="d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-glass-primary px-5 d-flex align-items-center">
                     <i class="bi bi-save me-2"></i> Save
                 </button>
-                <a asp-action="Index" class="btn btn-outline-light rounded-pill px-4 py-2">
-                    <i class="bi bi-x-circle me-2"></i> Cancel
-                </a>
             </div>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }
